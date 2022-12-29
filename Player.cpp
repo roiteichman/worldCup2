@@ -6,15 +6,15 @@
 #include <cstdlib>
 
 
-Player::Player(int playerId, int teamId, int gamesPlayed, int scoredGoals, int CardsReceived, bool goalKeeper):
-        m_id(playerId), m_team(teamId), m_gamePlayed(gamesPlayed), m_goals(scoredGoals), m_cards(CardsReceived), m_goalKeeper(goalKeeper),
-        m_closest_left(nullptr), m_closest_right(nullptr)
-{}
+Player::Player(int playerId, int teamId, int gamesPlayed, int scoredGoals, int CardsReceived, bool goalKeeper) :
+        m_id(playerId), m_team(teamId), m_gamePlayed(gamesPlayed), m_goals(scoredGoals), m_cards(CardsReceived),
+        m_goalKeeper(goalKeeper),
+        m_closest_left(nullptr), m_closest_right(nullptr) {}
 
 bool Player::operator<(const Player &other) const {
-    if(this->m_goals<other.getGoalsScored())
+    if (this->m_goals < other.getGoalsScored())
         return true;
-    if(this->m_goals==other.getGoalsScored()) {
+    if (this->m_goals == other.getGoalsScored()) {
         if (this->m_cards > other.getCardsReceived())
             return true;
         if (this->m_cards == other.getCardsReceived())
@@ -25,20 +25,20 @@ bool Player::operator<(const Player &other) const {
 }
 
 bool Player::operator>(const Player &other) const {
-    return m_id>other.getID();
+    return m_id > other.getID();
 }
 
 
 void Player::setGamePlayed(int gamesPlayed) {
-    m_gamePlayed+=gamesPlayed;
+    m_gamePlayed += gamesPlayed;
 }
 
 void Player::setGoals(int goals) {
-    m_goals+=goals;
+    m_goals += goals;
 }
 
 void Player::setCards(int cardsReceived) {
-    m_cards+=cardsReceived;
+    m_cards += cardsReceived;
 }
 
 int Player::getGamesPlayed() const {
@@ -63,20 +63,20 @@ int Player::getID() const {
     m_team=newTeam;
 }*/
 
-void Player::setClosestLeft(Player* left) {
-    m_closest_left=left;
+void Player::setClosestLeft(Player *left) {
+    m_closest_left = left;
 }
 
-void Player::setClosestRight(Player* right) {
-    m_closest_right=right;
+void Player::setClosestRight(Player *right) {
+    m_closest_right = right;
 }
 
 
-Player* Player::getClosestRight() const {
+Player *Player::getClosestRight() const {
     return m_closest_right;
 }
 
-Player* Player::getClosestLeft() const {
+Player *Player::getClosestLeft() const {
     return m_closest_left;
 }
 
@@ -85,14 +85,14 @@ Player* Player::getClosestLeft() const {
     return m_team;
 }*/
 
-Player* Player::getClosest() const {
-    if (!m_closest_left && !m_closest_right){
+Player *Player::getClosest() const {
+    if (!m_closest_left && !m_closest_right) {
         return nullptr;
     }
-    if (!m_closest_left){
+    if (!m_closest_left) {
         return m_closest_right;
     }
-    if (!m_closest_right){
+    if (!m_closest_right) {
         return m_closest_left;
     }
 
@@ -101,11 +101,11 @@ Player* Player::getClosest() const {
     int distanceCardsLeft = abs(m_cards - m_closest_left->getCardsReceived());
     int distanceCardsRight = abs(m_closest_right->getCardsReceived() - m_cards);
     int distanceIdsLeft = abs(m_id - m_closest_left->getID());
-    int distanceIdsRight = abs(m_closest_right->getID()-m_id);
+    int distanceIdsRight = abs(m_closest_right->getID() - m_id);
 
-    if(distanceGoalsLeft < distanceGoalsRight)
+    if (distanceGoalsLeft < distanceGoalsRight)
         return m_closest_left;
-    if(distanceGoalsLeft == distanceGoalsRight) {
+    if (distanceGoalsLeft == distanceGoalsRight) {
         if (distanceCardsLeft < distanceCardsRight)
             return m_closest_left;
         if (distanceCardsLeft == distanceCardsRight)
@@ -121,8 +121,8 @@ int Player::getTeamID() const {
 
 
 Player::~Player() {
-    m_closest_right= nullptr;
-    m_closest_left= nullptr;
+    m_closest_right = nullptr;
+    m_closest_left = nullptr;
 }
 
 bool Player::isGoalkeeper() const {
