@@ -6,7 +6,7 @@
 #define AVLTREE_H_UNIONFIND_H
 
 #include "DoubleHashing.h"
-#include "AVLTree.h"
+#include "RankTree.h"
 
 const bool FIRST_ARRAY = true;
 const bool SECOND_ARRAY = false;
@@ -53,12 +53,12 @@ private:
     //Array  of players
     DoubleHashing<Key, Node<Value, Value1>>* m_array;
     //Tree  of teams
-    AVLTree<Value1*> m_teams;
+    RankTree<Value1*> m_teams;
 
 public:
     unionFind():
             m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
-            m_teams(new AVLTree<Value1*>())
+            m_teams(new RankTree<Value1*>())
     {}
 
 

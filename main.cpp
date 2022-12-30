@@ -5,6 +5,7 @@
 #include "Team.h"
 #include "Player.h"
 #include "worldcup23a2.h"
+
 int main() {
     std::cout << "Hello, World!" << std::endl;
     Vector<int> a(0);

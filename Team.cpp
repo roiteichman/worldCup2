@@ -64,7 +64,7 @@ void Team::removePlayer(shared_ptr<Player> player) {
     }
 
 
-    AVLNode<shared_ptr<Player>>* playerNode = m_teamPlayersByStats.find(m_teamPlayersByStats.getRoot(), player);
+    RankNode<shared_ptr<Player>>* playerNode = m_teamPlayersByStats.find(m_teamPlayersByStats.getRoot(), player);
 
     // update top scorer
     if (player.get()==m_topScorer){
