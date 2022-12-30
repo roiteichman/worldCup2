@@ -26,15 +26,13 @@ private:
     RankTree<shared_ptr<Player>> m_teamPlayersByIds;
     Player* m_topScorer;
     Player* m_rootPlayer;
-public:
-    void setMRootPlayer(Player *mRootPlayer);
-
-private:
     Team* m_closest_left;
     Team* m_closest_right;
 
 
 public:
+    void setRoot(Player *mRootPlayer);
+
     Player *getMRootPlayer() const;
 
     explicit Team(int teamId, int point=0);
@@ -61,7 +59,7 @@ public:
     void addPlayer (const shared_ptr<Player>& player);
 
     int getNumOfGoalKeepers() const;
-    int getNumOfPlayers() const;
+    int size() const;
     Team* getClosestLeft() const;
     Team* getClosestRight() const;
     void get_all_players(int *const output);

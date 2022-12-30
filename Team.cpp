@@ -43,7 +43,7 @@ int Team::getCards() const {
     return m_sumOfCards;
 }
 
-int Team::getNumOfPlayers() const {
+int Team::size() const {
     return m_numOfPlayers;
 }
 
@@ -190,7 +190,7 @@ bool Team::isValid() const {
     return (m_numOfGoalKeepers) && (m_numOfPlayers>=VALID_TEAM);
 }
 
-void Team::setMRootPlayer(Player *mRootPlayer) {
+void Team::setRoot(Player *mRootPlayer) {
     m_rootPlayer = mRootPlayer;
 }
 

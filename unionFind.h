@@ -67,7 +67,7 @@ public:
     int rankOfNode(Node<Value, Value1>* node);
     void insertValue(Value* val, Key key);
 
-    void insertValue1(Value *val, Key key);
+    void insertValue1(Value1 *val, Key key);
 };
 
 
@@ -103,19 +103,20 @@ template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::insertValue(Value *val, Key key) {
     if(m_teams.findInt(m_teams.getRoot(), key))
     {
-        Node<Value, Value1> p(val);
-        this->m_array->put(val->getID(), p);
-        m_teams.findInt(m_teams.getRoot(), key)->getValue()->setMRootPlayer(p.getValue());
+        Node<Value, Value1> tmp(val);
+        this->m_array->put(val->getID(), tmp);
+        if(m_teams.findInt(m_teams.getRoot(), key)->getValue()->size())
+        {
+            m_teams.findInt(m_teams.getRoot(), key)->getValue()->setRoot(tmp.getValue());
+        }
     }
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::insertValue1(Value *val, Key key) {
+void unionFind<Key, Value, Value1>::insertValue1(Value1 *val, Key key) {
     if(m_teams.findInt(m_teams.getRoot(), key))
     {
-        Node<Value, Value1> p(val);
-        this->m_array->put(val->getID(), p);
-        m_teams.findInt(m_teams.getRoot(), key)->getValue()->setMRootPlayer(p.getValue());
+        m_teams.insert(val);
     }
 }
 
