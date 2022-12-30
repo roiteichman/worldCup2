@@ -15,8 +15,8 @@ template<typename Value, typename Value1>
 struct Node {
 private:
     Value* m_value;
-    Node<Value, Value1>* m_father;
-    Node<Value1, Value>* m_root;
+    Node<Value, Value1>*    m_father;
+    RankNode<Value1>* m_root;
 public:
     void setMRoot(Node<Value1, Value> *mRoot) {
         m_root = mRoot;
@@ -111,12 +111,13 @@ void unionFind<Key, Value, Value1>::insertValue(Value *val, Key key) {
 
 template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::insertValue1(Value *val, Key key) {
-    if(!m_teams.findInt(key))
+    if(m_teams.findInt(m_teams.getRoot(), key))
     {
-        Node<Value1, Value> p(val);
+        Node<Value, Value1> p(val);
         this->m_array->put(val->getID(), p);
-        m_teams.findInt(key)->getValue()->setMRoot(p);
+        m_teams.findInt(m_teams.getRoot(), key)->getValue()->setMRootPlayer(p.getValue());
     }
 }
+
 
 #endif //AVLTREE_H_UNIONFIND_H
