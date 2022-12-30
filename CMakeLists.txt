@@ -7,7 +7,7 @@ include_directories(.)
 
 add_executable(worldCup2
         AVLTree.h
-        main23a2.cpp
+        main.cpp
         Player.cpp
         Player.h
         DoubleHashing.h

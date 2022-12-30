@@ -99,7 +99,7 @@ bool AVLTree<T>::insert(const T& value) {
     AVLNode<T> *newNode;
     try {
         newNode = new AVLNode<T>(value);
-    } catch (const bad_alloc &e) {
+    } catch (const std::bad_alloc &e) {
         return true; // Out of memory
     }
 
@@ -469,7 +469,7 @@ AVLNode<T>* AVLTree<T>::sortedArrayToAVL(T* arr, int start, int end)
     try {
         root = new AVLNode<T>(arr[mid]);
     }
-    catch (const bad_alloc& e){
+    catch (const std::bad_alloc& e){
         return nullptr;
     }
 

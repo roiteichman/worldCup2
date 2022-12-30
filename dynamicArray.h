@@ -19,12 +19,11 @@ public:
     // Constructors
     //Vector() = default; // default constructor
     // constructor based on capacity and a default value
-    Vector(int capacity, T initial);
+    Vector(int capacity, T& initial);
     explicit Vector(T initial = T{});
 
     // Destructor
     ~Vector() {delete[] vector_;}
-    void expend();
 
     // Element read/write access
     T& operator[](const int index); // return element reference at index
@@ -57,7 +56,7 @@ vector_{new T[INITIAL_SIZE]{}}
 
 
 template<class T>
-Vector<T>::Vector(int capacity, T initial): m_capacity{capacity},
+Vector<T>::Vector(int capacity, T& initial): m_capacity{capacity},
                                                vector_{new T[capacity]{}} // allocate stack and store its pointer
 {
     for (size_t i=0; i < capacity; ++i)
