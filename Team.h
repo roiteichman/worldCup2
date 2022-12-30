@@ -51,7 +51,7 @@ public:
 
 
     void removePlayer (shared_ptr<Player> player);
-    void addPlayer (Player* player);
+    void addPlayer (const shared_ptr<Player>& player);
 
     int getNumOfGoalKeepers() const;
     int getNumOfPlayers() const;
