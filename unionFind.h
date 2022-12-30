@@ -2,8 +2,8 @@
 // Created by shlom on 29/12/2022.
 //
 
-#ifndef AVLTREE_H_UNIONFINF_H
-#define AVLTREE_H_UNIONFINF_H
+#ifndef AVLTREE_H_UNIONFIND_H
+#define AVLTREE_H_UNIONFIND_H
 
 #include "DoubleHashing.h"
 #include "AVLTree.h"
@@ -11,11 +11,16 @@
 const bool FIRST_ARRAY = true;
 const bool SECOND_ARRAY = false;
 
-template<typename Value>
+template<typename Value, typename Value1>
 struct Node {
 private:
     Value* m_value;
-    Node<Value>* m_father;
+    Node<Value, Value1>* m_father;
+    Node<Value1, Value>* m_root;
+public:
+    void setMRoot(Node<Value1, Value> *mRoot) {
+        m_root = mRoot;
+    }
 
 public:
     Node() {
@@ -24,11 +29,11 @@ public:
     Node(Value* value) {
         m_value = value;
     }
-    void setFather(Node<Value> *father)
+    void setFather(Node<Value, Value1> *father)
     {
         this->m_next=father;
     }
-    Node* getFather(Node<Value> *father)
+    Node* getFather(Node<Value, Value1> *father)
     {
         return m_father;
     }
@@ -46,21 +51,23 @@ template<typename Key, typename Value, typename Value1>
 class unionFind{
 private:
     //Array  of players
-    DoubleHashing<Key, Node<Value>>* m_array;
+    DoubleHashing<Key, Node<Value, Value1>>* m_array;
     //Tree  of teams
-    AVLTree<Value1*> m_teams;
+    AVLTree<Value1*,> m_teams;
 
 public:
     unionFind():
-            m_array (new DoubleHashing<Key, Node<Value>>()),
+            m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
             m_teams(new AVLTree<Value1*>())
     {}
 
 
     Value* find(Key key, bool whichArr);
     int union_(Key key1, Key key2);
-    int rankOfNode(Node<Value>* node);
-    void insert(Value* val);
+    int rankOfNode(Node<Value, Value1>* node);
+    void insertValue(Value* val, Key key);
+
+    void insertValue1(Value *val, Key key);
 };
 
 
@@ -82,7 +89,7 @@ int unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
 
 
 template<typename Key, typename Value, typename Value1>
-int unionFind<Key, Value, Value1>::rankOfNode(Node<Value>* node) {
+int unionFind<Key, Value, Value1>::rankOfNode(Node<Value, Value1>* node) {
     int i=0;
     while(node->getFather())
     {
@@ -93,9 +100,23 @@ int unionFind<Key, Value, Value1>::rankOfNode(Node<Value>* node) {
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::insert(Value *val) {
-    Node<Value> p(val);
-    this->m_array->put(val->getID(), p);
+void unionFind<Key, Value, Value1>::insertValue(Value *val, Key key) {
+    if(m_teams.findInt(m_teams.getRoot(), key))
+    {
+        Node<Value, Value1> p(val);
+        this->m_array->put(val->getID(), p);
+        m_teams.findInt(m_teams.getRoot(), key)->getValue()->setRoot(p);
+    }
 }
 
-#endif //AVLTREE_H_UNIONFINF_H
+template<typename Key, typename Value, typename Value1>
+void unionFind<Key, Value, Value1>::insertValue1(Value *val, Key key) {
+    if(!m_teams.findInt(key))
+    {
+        Node<Value1, Value> p(val);
+        this->m_array->put(val->getID(), p);
+        m_teams.findInt(key)->getValue()->setMRoot(p);
+    }
+}
+
+#endif //AVLTREE_H_UNIONFIND_H

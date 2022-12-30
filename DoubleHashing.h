@@ -13,6 +13,7 @@
 #define DoubleHashing_hpp
 
 #include "dynamicArray.h"
+#include <iostream>
 
 #include <stdexcept>
 ///TODO: check if we are allowed to use stdexcept

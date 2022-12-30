@@ -6,15 +6,15 @@
 #include <cstdlib>
 
 
-Player::Player(int playerId, int teamId, int gamesPlayed, int scoredGoals, int CardsReceived, bool goalKeeper) :
-        m_id(playerId), m_team(teamId), m_gamePlayed(gamesPlayed), m_goals(scoredGoals), m_cards(CardsReceived),
+Player::Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int ability, int CardsReceived, bool goalKeeper) :
+        m_id(playerId), m_team(teamId),m_spirit(spirit), m_gamePlayed(gamesPlayed), m_ability(ability), m_cards(CardsReceived),
         m_goalKeeper(goalKeeper),
         m_closest_left(nullptr), m_closest_right(nullptr) {}
 
 bool Player::operator<(const Player &other) const {
-    if (this->m_goals < other.getGoalsScored())
+    if (this->m_ability < other.getGoalsScored())
         return true;
-    if (this->m_goals == other.getGoalsScored()) {
+    if (this->m_ability == other.getGoalsScored()) {
         if (this->m_cards > other.getCardsReceived())
             return true;
         if (this->m_cards == other.getCardsReceived())
@@ -34,7 +34,7 @@ void Player::setGamePlayed(int gamesPlayed) {
 }
 
 void Player::setGoals(int goals) {
-    m_goals += goals;
+    m_ability += goals;
 }
 
 void Player::setCards(int cardsReceived) {
@@ -46,7 +46,7 @@ int Player::getGamesPlayed() const {
 }
 
 int Player::getGoalsScored() const {
-    return m_goals;
+    return m_ability;
 }
 
 int Player::getCardsReceived() const {
@@ -96,8 +96,8 @@ Player *Player::getClosest() const {
         return m_closest_left;
     }
 
-    int distanceGoalsLeft = abs(m_goals - m_closest_left->getGoalsScored());
-    int distanceGoalsRight = abs(m_closest_right->getGoalsScored() - m_goals);
+    int distanceGoalsLeft = abs(m_ability - m_closest_left->getGoalsScored());
+    int distanceGoalsRight = abs(m_closest_right->getGoalsScored() - m_ability);
     int distanceCardsLeft = abs(m_cards - m_closest_left->getCardsReceived());
     int distanceCardsRight = abs(m_closest_right->getCardsReceived() - m_cards);
     int distanceIdsLeft = abs(m_id - m_closest_left->getID());

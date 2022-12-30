@@ -1,5 +1,6 @@
 #include "worldcup23a2.h"
 
+
 world_cup_t::world_cup_t()
 {
 	// TODO: Your code goes here
@@ -27,6 +28,8 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    int ability, int cards, bool goalKeeper)
 {
 	// TODO: Your code goes here
+    Player* player = new Player(7, 2, spirit, 3, 4, 5, true);
+    m_players.insertValue(player, playerId);
 	return StatusType::SUCCESS;
 }
 

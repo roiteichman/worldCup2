@@ -190,3 +190,11 @@ bool Team::isValid() const {
     return (m_numOfGoalKeepers) && (m_numOfPlayers>=VALID_TEAM);
 }
 
+void Team::setMRootPlayer(Player *mRootPlayer) {
+    m_rootPlayer = mRootPlayer;
+}
+
+Player *Team::getMRootPlayer() const {
+    return m_rootPlayer;
+}
+

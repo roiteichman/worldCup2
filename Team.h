@@ -25,11 +25,17 @@ private:
     AVLTree<shared_ptr<Player>> m_teamPlayersByStats;
     AVLTree<shared_ptr<Player>> m_teamPlayersByIds;
     Player* m_topScorer;
-    Player* rootPlayer;
+    Player* m_rootPlayer;
+public:
+    void setMRootPlayer(Player *mRootPlayer);
+
+private:
     Team* m_closest_left;
     Team* m_closest_right;
 
 public:
+    Player *getMRootPlayer() const;
+
     explicit Team(int teamId, int point=0);
     ~Team() = default;
     Team (const Team& team) = delete;

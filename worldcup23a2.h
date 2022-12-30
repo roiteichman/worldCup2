@@ -16,13 +16,17 @@
 #define WORLDCUP23A2_H_
 
 #include "wet2util.h"
+#include "unionFind.h"
+#include "Player.h"
+#include "Team.h"
+#include <iostream>
 
 class world_cup_t {
 private:
 	//
 	// Here you may add anything you want
 	//
-	
+	unionFind<int, Player, Team> m_players;
 public:
 	// <DO-NOT-MODIFY> {
 	

@@ -8,6 +8,7 @@
 
 
 #include <memory>
+#include "wet2util.h"
 //#include "team.h"
 
 using namespace std;
@@ -17,15 +18,16 @@ private:
     int m_id;
     int m_team;
     int m_gamePlayed;
-    int m_goals;
+    int m_ability;
     int m_cards;
     bool m_goalKeeper;
+    permutation_t m_spirit;
     Player* m_closest_left;
     Player* m_closest_right;
 
 
 public:
-    Player(int playerId, int teamId, int gamesPlayed, int scoredGoals, int CardsReceived, bool goalKeeper);
+    Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int scoredGoals, int CardsReceived, bool goalKeeper);
     ~Player();
     Player (const Player& player) = delete;
     Player& operator = (const Player& player) = delete;
