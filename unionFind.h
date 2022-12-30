@@ -65,9 +65,9 @@ public:
     Value* find(Key key, bool whichArr);
     int union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
-    void insertValue(Value* val, Key key);
+    void makeSet(Value* val, Key key);
 
-    void insertValue1(Value1 *val, Key key);
+    void insertGroup(Value1 *val, Key key);
 };
 
 
@@ -100,20 +100,26 @@ int unionFind<Key, Value, Value1>::rankOfNode(Node<Value, Value1>* node) {
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::insertValue(Value *val, Key key) {
+void unionFind<Key, Value, Value1>::makeSet(Value *val, Key key) {
     if(m_teams.findInt(m_teams.getRoot(), key))
     {
-        Node<Value, Value1> tmp(val);
         this->m_array->put(val->getID(), tmp);
-        if(m_teams.findInt(m_teams.getRoot(), key)->getValue()->size())
+        Node<Value, Value1> tmp(val);
+        Value1* tmp1 =m_teams.findInt(m_teams.getRoot(), key)->getValue();
+        //if is first player
+        if(!tmp1->size())
         {
-            m_teams.findInt(m_teams.getRoot(), key)->getValue()->setRoot(tmp.getValue());
+            tmp1->setRoot(tmp.getValue());
+        }
+        else
+        {
+            tmp1->getMRoot(val);
         }
     }
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::insertValue1(Value1 *val, Key key) {
+void unionFind<Key, Value, Value1>::insertGroup(Value1 *val, Key key) {
     if(m_teams.findInt(m_teams.getRoot(), key))
     {
         m_teams.insert(val);

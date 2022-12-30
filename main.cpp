@@ -18,7 +18,7 @@ int main() {
     DoubleHashing<int,int> dh;
     unionFind<int, Player, Team> uf;
     wc.add_player(7, 2, *t, 3, 4, 5, true);
-    uf.insertValue(player, 7);
+    uf.makeSet(player, 7);
     dh.put(1, c);
     //dh.print();
     dh.put(2, c);

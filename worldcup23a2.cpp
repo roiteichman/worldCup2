@@ -28,9 +28,23 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    int ability, int cards, bool goalKeeper)
 {
 	// TODO: Your code goes here
-    Player* player = new Player(7, 2, spirit, 3, 4, 5, true);
-    m_players.insertValue(player, playerId);
+    Player* player = new Player(playerId, teamId, spirit, gamesPlayed, ability, cards, goalKeeper);
+    m_players.makeSet(player, playerId);
+
 	return StatusType::SUCCESS;
+
+
+    Node<Player, Team> tmp(player);
+    Team* group =m_teams.findInt(m_teams.getRoot(), teamId)->getValue();
+    //if is first player
+    if(!group->size())
+    {
+        group->setRoot(tmp.getValue());
+    }
+    else
+    {
+        group->getMRoot(val);
+    }
 }
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2)

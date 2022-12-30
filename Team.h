@@ -31,10 +31,6 @@ private:
 
 
 public:
-    void setRoot(Player *mRootPlayer);
-
-    Player *getMRootPlayer() const;
-
     explicit Team(int teamId, int point=0);
     ~Team() = default;
     Team (const Team& team) = delete;
@@ -44,6 +40,8 @@ public:
     bool operator< (const Team& other) const;
 
 
+    void setRoot(Player *mRootPlayer);
+    Player *getMRootPlayer() const;
     void setPoints (int points);
     void setGoals (int goals);
     void setCards (int cards);
