@@ -8,7 +8,7 @@
 
 
 #include <memory>
-//include "team.h"
+#include "team.h"
 
 using namespace std;
 
@@ -31,9 +31,6 @@ public:
     Player& operator = (const Player& player) = delete;
     bool operator< (const Player& other) const;
     bool operator> (const Player& other) const;
-
-    void setTeam(int mTeam);
-
     void setGamePlayed (int gamesPlayed);
     void setGoals (int goals);
     void setCards (int cardsReceived);

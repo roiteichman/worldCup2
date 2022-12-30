@@ -129,6 +129,4 @@ bool Player::isGoalkeeper() const {
     return m_goalKeeper;
 }
 
-void Player::setTeam(int mTeam) {
-    m_team = mTeam;
-}
+

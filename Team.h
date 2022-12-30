@@ -25,6 +25,7 @@ private:
     AVLTree<shared_ptr<Player>> m_teamPlayersByStats;
     AVLTree<shared_ptr<Player>> m_teamPlayersByIds;
     Player* m_topScorer;
+    Player* rootPlayer;
     Team* m_closest_left;
     Team* m_closest_right;
 
@@ -50,7 +51,7 @@ public:
 
 
     void removePlayer (shared_ptr<Player> player);
-    void addPlayer (const shared_ptr<Player>& player);
+    void addPlayer (Player* player);
 
     int getNumOfGoalKeepers() const;
     int getNumOfPlayers() const;
