@@ -53,7 +53,7 @@ private:
     //Array  of players
     DoubleHashing<Key, Node<Value, Value1>>* m_array;
     //Tree  of teams
-    AVLTree<Value1*,> m_teams;
+    AVLTree<Value1*> m_teams;
 
 public:
     unionFind():
@@ -105,7 +105,7 @@ void unionFind<Key, Value, Value1>::insertValue(Value *val, Key key) {
     {
         Node<Value, Value1> p(val);
         this->m_array->put(val->getID(), p);
-        m_teams.findInt(m_teams.getRoot(), key)->getValue()->setRoot(p);
+        m_teams.findInt(m_teams.getRoot(), key)->getValue()->setMRootPlayer(p.getValue());
     }
 }
 
