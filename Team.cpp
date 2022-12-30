@@ -11,7 +11,7 @@ const int VALID_TEAM = 11;
 
 Team::Team(int teamId, int point):
         m_teamId(teamId), m_points(point), m_sumOfGoals(0), m_sumOfCards(0), m_numOfPlayers(0), m_numOfGoalKeepers(0), m_gamesPlayed(0),
-        m_teamPlayersByStats(AVLTree<shared_ptr<Player>>(BY_STATS)), m_teamPlayersByIds(AVLTree<shared_ptr<Player>>(BY_IDS)),
+        m_teamPlayersByStats(RankTree<shared_ptr<Player>>(BY_STATS)), m_teamPlayersByIds(RankTree<shared_ptr<Player>>(BY_IDS)),
         m_topScorer(nullptr), m_closest_left(nullptr), m_closest_right(nullptr)
 {}
 
@@ -115,12 +115,12 @@ Team* Team::getClosestRight() const {
     return m_closest_right;
 }
 
-AVLTree<shared_ptr<Player>> &Team::getTeamPlayerByStats() {
+RankTree<shared_ptr<Player>> &Team::getTeamPlayerByStats() {
     return m_teamPlayersByStats;
 }
 
 
-AVLTree<shared_ptr<Player>> &Team::getTeamPlayerByIds(){
+RankTree<shared_ptr<Player>> &Team::getTeamPlayerByIds(){
     return m_teamPlayersByIds;
 }
 
@@ -170,11 +170,11 @@ void Team::get_all_players(int *const output) {
     m_teamPlayersByStats.printInOrderByID(m_teamPlayersByStats.getRoot(), output, i);
 }
 
-void Team::setTeamPlayersByStats(const AVLTree<shared_ptr<Player>>& TeamPlayersByStats) {
+void Team::setTeamPlayersByStats(const RankTree<shared_ptr<Player>>& TeamPlayersByStats) {
     m_teamPlayersByStats = TeamPlayersByStats;
 }
 
-void Team::setTeamPlayersByIds(const AVLTree<shared_ptr<Player>>& TeamPlayersByIds) {
+void Team::setTeamPlayersByIds(const RankTree<shared_ptr<Player>>& TeamPlayersByIds) {
     m_teamPlayersByIds = TeamPlayersByIds;
 }
 

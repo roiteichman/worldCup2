@@ -7,98 +7,111 @@
 #include <iostream>
 
 template <class T>
-class AVLNode {
+class RankNode {
 private:
-    AVLNode();
+    RankNode();
 
     T     m_data;
-    AVLNode* m_left;
-    AVLNode* m_right;
-    AVLNode* m_parent;
+    RankNode* m_left;
+    RankNode* m_right;
+    RankNode* m_parent;
     int m_height;
+    int m_weight;
 
 public:
-    AVLNode(const T& value) : m_data(value), m_left(nullptr), m_right(nullptr), m_parent(nullptr), m_height(0) {}
-    ~AVLNode() {}
+    RankNode(const T& value) : m_data(value), m_left(nullptr), m_right(nullptr), m_parent(nullptr), m_height(0), m_weight(1) {}
+    ~RankNode() {}
 
     const T&  getValue () const { return m_data; }
     void      setValue(T data) {m_data=data; }
-    void      setLeft (AVLNode* left) { m_left = left; }
-    AVLNode*  getLeft () const { return m_left; }
-    void      setRight (AVLNode* right) { m_right = right; }
-    AVLNode*  getRight () const { return m_right; }
-    void      setParent (AVLNode* parent) { m_parent = parent; }
-    AVLNode*  getParent () const { return m_parent; }
+    void      setLeft (RankNode* left) { m_left = left; }
+    RankNode*  getLeft () const { return m_left; }
+    void      setRight (RankNode* right) { m_right = right; }
+    RankNode*  getRight () const { return m_right; }
+    void      setParent (RankNode* parent) { m_parent = parent; }
+    RankNode*  getParent () const { return m_parent; }
     void      removeData () { m_data = nullptr; }
     void      setHeight (int maxHeight) { m_height = maxHeight;}
     int       getHeight () const {return m_height;}
+    void      increaseWeight () {m_weight++;}
+    void      decreaseWeight () {m_weight--;}
+    void      updateWeight () {
+        if (m_right && m_left)
+            m_weight = 1 + m_right->m_weight + m_left->m_weight;
+        if (m_right)
+            m_weight = 1 + m_right->m_weight;
+        if (m_left)
+            m_weight = 1 + m_left->m_weight;
+        if (!m_left && !m_right)
+            m_weight = 1;
+    }
 
 };
 
 template <class T>
-class AVLTree {
+class RankTree {
 public:
-    explicit AVLTree(bool orderBy=true, AVLNode<T>* root = nullptr) : m_orderBy(orderBy), m_root(root) {}
-    ~AVLTree();
+    explicit RankTree(bool orderBy=true, RankNode<T>* root = nullptr) : m_orderBy(orderBy), m_root(root) {}
+    ~RankTree();
 
     bool insert(const T& value);
 
-    void setMRoot(AVLNode<T> *mRoot);
+    void setMRoot(RankNode<T> *mRoot);
 
-    AVLNode<T>* getRoot() const { return m_root; }
+    RankNode<T>* getRoot() const { return m_root; }
 
-    AVLNode<T>* find(AVLNode<T>* root, const T& value);
-    AVLNode<T> *findInt(AVLNode<T> *root, int value) const;
-    void remove(AVLNode<T>* root, const T& value);
+    RankNode<T>* find(RankNode<T>* root, const T& value);
+    RankNode<T> *findInt(RankNode<T> *root, int value) const;
+    void remove(RankNode<T>* root, const T& value);
 
-    void findNext(AVLNode<T>* leaf);
-    void findPrevious(AVLNode<T>* leaf);
+    void findNext(RankNode<T>* leaf);
+    void findPrevious(RankNode<T>* leaf);
 
 
-    int  height(const AVLNode<T>* root) const;
-    int maxHeight (const AVLNode<T>* root) const;
-    int  balanceFactor(AVLNode<T>* root) const;
-    void balanceTheTree(AVLNode<T>* root);
+    int  height(const RankNode<T>* root) const;
+    int maxHeight (const RankNode<T>* root) const;
+    int  balanceFactor(RankNode<T>* root) const;
+    void balanceTheTree(RankNode<T>* root);
 
-    void rotateLeft (AVLNode<T>* B);
-    void rotateRight(AVLNode<T>* C);
+    void rotateLeft (RankNode<T>* B);
+    void rotateRight(RankNode<T>* C);
 
-    void printInOrderByID  (AVLNode<T>* root, int *const output, int& i) ; // Left, Parent, Right
-    void printInOrder  (AVLNode<T>* root, T *const output, int& i) ; // Left, Parent, Right
-    AVLNode<T> *sortedArrayToAVL(T* arr, int start, int end);
-    void insertAvlNodeByStats(AVLNode<T>* root, AVLNode<T>* newNode);
-    void insertAvlNodeByIds(AVLNode<T>* root, AVLNode<T>* newNode);
+    void printInOrderByID  (RankNode<T>* root, int *const output, int& i) ; // Left, Parent, Right
+    void printInOrder  (RankNode<T>* root, T *const output, int& i) ; // Left, Parent, Right
+    RankNode<T> *sortedArrayToAVL(T* arr, int start, int end);
+    void insertRankNodeByStats(RankNode<T>* root, RankNode<T>* newNode);
+    void insertRankNodeByIds(RankNode<T>* root, RankNode<T>* newNode);
 
 
 
 private:
     bool m_orderBy;
-    AVLNode<T>* m_root;
-    void deleteAvlNode(AVLNode<T>* node);
+    RankNode<T>* m_root;
+    void deleteRankNode(RankNode<T>* node);
 };
 
 template <class T>
-AVLTree<T>::~AVLTree() {
+RankTree<T>::~RankTree() {
     if( m_root ) {
-        deleteAvlNode(m_root);
+        deleteRankNode(m_root);
     }
 }
 
 template <class T>
-void AVLTree<T>::deleteAvlNode(AVLNode<T>* node) {
+void RankTree<T>::deleteRankNode(RankNode<T>* node) {
     if( node ) {
-        deleteAvlNode(node->getLeft());
-        deleteAvlNode(node->getRight());
+        deleteRankNode(node->getLeft());
+        deleteRankNode(node->getRight());
         node->removeData();
         delete node; // Post Order Deletion
     }
 }
 
 template <class T>
-bool AVLTree<T>::insert(const T& value) {
-    AVLNode<T> *newNode;
+bool RankTree<T>::insert(const T& value) {
+    RankNode<T> *newNode;
     try {
-        newNode = new AVLNode<T>(value);
+        newNode = new RankNode<T>(value);
     } catch (const std::bad_alloc &e) {
         return true; // Out of memory
     }
@@ -108,21 +121,21 @@ bool AVLTree<T>::insert(const T& value) {
     }
     else {
         if (m_orderBy)
-            insertAvlNodeByStats(m_root, newNode);
+            insertRankNodeByStats(m_root, newNode);
         else
-            insertAvlNodeByIds(m_root, newNode);
+            insertRankNodeByIds(m_root, newNode);
     }
     return false;
 }
 
 template <class T>
-void AVLTree<T>::insertAvlNodeByStats(AVLNode<T>* root, AVLNode<T>* newNode) {
+void RankTree<T>::insertRankNodeByStats(RankNode<T>* root, RankNode<T>* newNode) {
     // if the node exist we catch it from outside
     // Binary Search Tree insertion algorithm
     // comparing by the value of the pointer
     if(*(newNode->getValue()) < *(root->getValue()) ) {
         if(root->getLeft() ) // If there is a left child, keep searching
-            insertAvlNodeByStats(root->getLeft(), newNode);
+            insertRankNodeByStats(root->getLeft(), newNode);
         else { // Found the right spot
             root->setLeft(newNode);
             newNode->setParent(root);
@@ -130,24 +143,25 @@ void AVLTree<T>::insertAvlNodeByStats(AVLNode<T>* root, AVLNode<T>* newNode) {
     }
     else {
         if(root->getRight() ) // If there is a right child, keep searching
-            insertAvlNodeByStats(root->getRight(), newNode);
+            insertRankNodeByStats(root->getRight(), newNode);
         else {// Found the right spot
             root->setRight(newNode);
             newNode->setParent(root);
         }
     }
     root->setHeight(maxHeight(root));
+    root->increaseWeight();
     balanceTheTree(root);
 }
 
 template <class T>
-void AVLTree<T>::insertAvlNodeByIds(AVLNode<T> *root, AVLNode<T> *newNode) {
+void RankTree<T>::insertRankNodeByIds(RankNode<T> *root, RankNode<T> *newNode) {
     // if the node exist we catch it from outside
     // Binary Search Tree insertion algorithm
     // comparing by the value of the pointer
     if(*(newNode->getValue()) > *(root->getValue()) ) {
         if(root->getRight() ) // If there is a left child, keep searching
-            insertAvlNodeByIds(root->getRight(), newNode);
+            insertRankNodeByIds(root->getRight(), newNode);
         else { // Found the right spot
             root->setRight(newNode);
             newNode->setParent(root);
@@ -155,24 +169,25 @@ void AVLTree<T>::insertAvlNodeByIds(AVLNode<T> *root, AVLNode<T> *newNode) {
     }
     else {
         if(root->getLeft() ) // If there is a right child, keep searching
-            insertAvlNodeByIds(root->getLeft(), newNode);
+            insertRankNodeByIds(root->getLeft(), newNode);
         else {// Found the right spot
             root->setLeft(newNode);
             newNode->setParent(root);
         }
     }
     root->setHeight(maxHeight(root));
+    root->increaseWeight();
     balanceTheTree(root);
 }
 
 template<class T>
-int AVLTree<T>::maxHeight(const AVLNode<T> *root) const {
+int RankTree<T>::maxHeight(const RankNode<T> *root) const {
     return (height(root->getLeft()) > height(root->getRight())) ? height(root->getLeft())+1 : height(root->getRight()) +1;
 }
 
 
 template <class T>
-int AVLTree<T>::height(const AVLNode<T>* root) const {
+int RankTree<T>::height(const RankNode<T>* root) const {
     if (root){
         return root->getHeight();
     }
@@ -180,7 +195,7 @@ int AVLTree<T>::height(const AVLNode<T>* root) const {
 }
 
 template<class T>
-void AVLTree<T>::balanceTheTree(AVLNode<T> *root) {
+void RankTree<T>::balanceTheTree(RankNode<T> *root) {
     // AVL balancing algorithm - Based on slide 14 on tutorial 5 in data structures
     int balance = balanceFactor(root);
     if( balance > 1 ) { // left tree unbalanced
@@ -206,12 +221,14 @@ void AVLTree<T>::balanceTheTree(AVLNode<T> *root) {
 }
 
 template <class T>
-void AVLTree<T>::rotateLeft (AVLNode<T>* B) {
-    AVLNode<T>* A = B->getRight();
+void RankTree<T>::rotateLeft (RankNode<T>* B) {
+    RankNode<T>* A = B->getRight();
     B->setRight(A->getLeft());
+    B->updateWeight();
     if (B->getRight())
         B->getRight()->setParent(B);
     A->setLeft(B);
+    A->updateWeight();
     A->setParent(B->getParent());
 
 
@@ -230,13 +247,15 @@ void AVLTree<T>::rotateLeft (AVLNode<T>* B) {
 }
 
 template <class T>
-void AVLTree<T>::rotateRight(AVLNode<T>* C) {
+void RankTree<T>::rotateRight(RankNode<T>* C) {
     // Rotate node
-    AVLNode<T>* A = C->getLeft();
+    RankNode<T>* A = C->getLeft();
     C->setLeft(A->getRight());
+    C->updateWeight();
     if (C->getLeft())
         C->getLeft()->setParent(C);
     A->setRight(C);
+    A->updateWeight();
 
     // Adjust tree
     if(C->getParent() == nullptr ) {
@@ -257,7 +276,7 @@ void AVLTree<T>::rotateRight(AVLNode<T>* C) {
 }
 
 template <class T>
-int  AVLTree<T>::balanceFactor(AVLNode<T>* root) const {
+int  RankTree<T>::balanceFactor(RankNode<T>* root) const {
     int balance = 0;
     if( root ) {
         balance = height(root->getLeft()) - height(root->getRight());
@@ -266,8 +285,8 @@ int  AVLTree<T>::balanceFactor(AVLNode<T>* root) const {
 }
 
 template<class T>
-void AVLTree<T>::findNext(AVLNode<T> *leaf) {
-    AVLNode<T> *next = leaf;
+void RankTree<T>::findNext(RankNode<T> *leaf) {
+    RankNode<T> *next = leaf;
     if (leaf->getRight() && leaf->getLeft()){
         leaf->getValue()->setClosestLeft(leaf->getLeft()->getValue().get());
         leaf->getLeft()->getValue()->setClosestRight(leaf->getValue().get());
@@ -293,8 +312,8 @@ void AVLTree<T>::findNext(AVLNode<T> *leaf) {
 
 
 template<class T>
-void AVLTree<T>::findPrevious(AVLNode<T> *leaf) {
-    AVLNode<T> *next = leaf;
+void RankTree<T>::findPrevious(RankNode<T> *leaf) {
+    RankNode<T> *next = leaf;
     if (!(next->getParent()) || (leaf->getRight() && leaf->getLeft())){
         return;
     }
@@ -312,7 +331,7 @@ void AVLTree<T>::findPrevious(AVLNode<T> *leaf) {
 }
 
 template <class T>
-void AVLTree<T>::printInOrderByID(AVLNode<T>* root, int *const output, int& i) {
+void RankTree<T>::printInOrderByID(RankNode<T>* root, int *const output, int& i) {
     if( root ) {
         printInOrderByID(root->getLeft(), output, i);  // Left
         output[i]=root->getValue()->getID(); // Parent
@@ -322,7 +341,7 @@ void AVLTree<T>::printInOrderByID(AVLNode<T>* root, int *const output, int& i) {
 }
 
 template <class T>
-void AVLTree<T>::printInOrder(AVLNode<T>* root, T* const output, int& i) {
+void RankTree<T>::printInOrder(RankNode<T>* root, T* const output, int& i) {
     if( root ) {
         printInOrder(root->getLeft(), output, i);  // Left
         output[i] = root->getValue(); // Parent
@@ -334,7 +353,7 @@ void AVLTree<T>::printInOrder(AVLNode<T>* root, T* const output, int& i) {
 
 // Depth-First Search
 template <class T>
-AVLNode<T>* AVLTree<T>::find(AVLNode<T>* root, const T& value) {
+RankNode<T>* RankTree<T>::find(RankNode<T>* root, const T& value) {
     bool byIDs = false;
     if (m_orderBy == byIDs){
         return findInt(root, value->getID());
@@ -352,7 +371,7 @@ AVLNode<T>* AVLTree<T>::find(AVLNode<T>* root, const T& value) {
     return nullptr;
 }
 template <class T>
-AVLNode<T>* AVLTree<T>::findInt(AVLNode<T>* root, int value) const{
+RankNode<T>* RankTree<T>::findInt(RankNode<T>* root, int value) const{
     if( root ) {
         //std::cout << root->getValue() << std::endl;
         if(root->getValue()->getID() == value )
@@ -368,12 +387,12 @@ AVLNode<T>* AVLTree<T>::findInt(AVLNode<T>* root, int value) const{
 
 
 template<class T>
-void AVLTree<T>::remove(AVLNode<T>* root, const T &value){
+void RankTree<T>::remove(RankNode<T>* root, const T &value){
 
-    AVLNode<T>* willDeleted = find(root, value);
+    RankNode<T>* willDeleted = find(root, value);
     if(!willDeleted)
         return;
-    AVLNode<T>* parent = willDeleted->getParent();
+    RankNode<T>* parent = willDeleted->getParent();
 
     bool removed = false;
 
@@ -402,7 +421,7 @@ void AVLTree<T>::remove(AVLNode<T>* root, const T &value){
         removed = true;
     }
     else if(willDeleted->getLeft() == nullptr || willDeleted->getRight() == nullptr) {
-        AVLNode<T> *singleSon;
+        RankNode<T> *singleSon;
 
         // 2: if it has a single son
         if (willDeleted->getLeft() == nullptr) {
@@ -432,8 +451,9 @@ void AVLTree<T>::remove(AVLNode<T>* root, const T &value){
 
     if (removed) {
         willDeleted->setParent(nullptr);
-        deleteAvlNode(willDeleted);
+        deleteRankNode(willDeleted);
         while (parent) {
+            parent->decreaseWeight();
             balanceTheTree(parent);
             parent = parent->getParent();
         }
@@ -442,7 +462,7 @@ void AVLTree<T>::remove(AVLNode<T>* root, const T &value){
     // 3: if it is an internal junction
     if (!removed) {
         // searching for the next junction one step right and all the way down to the left
-        AVLNode<T>* nextJunction = willDeleted->getRight();
+        RankNode<T>* nextJunction = willDeleted->getRight();
         //bool hasLeftSon = false;
         while (nextJunction->getLeft()) {
             nextJunction = nextJunction->getLeft();
@@ -457,7 +477,7 @@ void AVLTree<T>::remove(AVLNode<T>* root, const T &value){
 
 
 template <class T>
-AVLNode<T>* AVLTree<T>::sortedArrayToAVL(T* arr, int start, int end)
+RankNode<T>* RankTree<T>::sortedArrayToAVL(T* arr, int start, int end)
 {
     //Base Case
     if (start > end)
@@ -465,9 +485,9 @@ AVLNode<T>* AVLTree<T>::sortedArrayToAVL(T* arr, int start, int end)
 
     //Get the middle element and make it root
     int mid = (start + end)/2;
-    AVLNode<T> *root;
+    RankNode<T> *root;
     try {
-        root = new AVLNode<T>(arr[mid]);
+        root = new RankNode<T>(arr[mid]);
     }
     catch (const std::bad_alloc& e){
         return nullptr;
@@ -492,7 +512,7 @@ AVLNode<T>* AVLTree<T>::sortedArrayToAVL(T* arr, int start, int end)
 }
 
 template<class T>
-void AVLTree<T>::setMRoot(AVLNode<T> *mRoot) {
+void RankTree<T>::setMRoot(RankNode<T> *mRoot) {
     m_root = mRoot;
 }
 

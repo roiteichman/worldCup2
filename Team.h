@@ -6,7 +6,7 @@
 #define MAIN_CPP_TEAM_H
 #include <memory>
 #include "Player.h"
-#include "AVLTree.h"
+#include "RankTree.h"
 
 
 using namespace std;
@@ -22,8 +22,8 @@ private:
     int m_numOfGoalKeepers;
     int m_gamesPlayed;
 
-    AVLTree<shared_ptr<Player>> m_teamPlayersByStats;
-    AVLTree<shared_ptr<Player>> m_teamPlayersByIds;
+    RankTree<shared_ptr<Player>> m_teamPlayersByStats;
+    RankTree<shared_ptr<Player>> m_teamPlayersByIds;
     Player* m_topScorer;
     Player* m_rootPlayer;
 public:
@@ -32,6 +32,7 @@ public:
 private:
     Team* m_closest_left;
     Team* m_closest_right;
+
 
 public:
     Player *getMRootPlayer() const;
@@ -48,8 +49,8 @@ public:
     void setPoints (int points);
     void setGoals (int goals);
     void setCards (int cards);
-    void setTeamPlayersByStats(const AVLTree<shared_ptr<Player>>& TeamPlayersByStats);
-    void setTeamPlayersByIds(const AVLTree<shared_ptr<Player>>& TeamPlayersByIds);
+    void setTeamPlayersByStats(const RankTree<shared_ptr<Player>>& TeamPlayersByStats);
+    void setTeamPlayersByIds(const RankTree<shared_ptr<Player>>& TeamPlayersByIds);
     void setMNumOfPlayers(int mNumOfPlayers);
     void setClosestLeft (Team* left);
     void setClosestRight (Team* right);
@@ -77,8 +78,8 @@ public:
 
 
 
-    AVLTree<shared_ptr<struct Player>> & getTeamPlayerByStats ();
-    AVLTree<shared_ptr<struct Player>> & getTeamPlayerByIds ();
+    RankTree<shared_ptr<struct Player>> & getTeamPlayerByStats ();
+    RankTree<shared_ptr<struct Player>> & getTeamPlayerByIds ();
 
 
 

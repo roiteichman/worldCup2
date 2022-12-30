@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(worldCup2
-        AVLTree.h
+        RankTree.h
         main.cpp
         Player.cpp
         Player.h
