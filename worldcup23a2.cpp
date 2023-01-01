@@ -32,7 +32,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    const permutation_t &spirit, int gamesPlayed,
                                    int ability, int cards, bool goalKeeper)
 {
-	// TODO: Your code goes here
+
+
+    // TODO: Your code goes here
     shared_ptr<Player> player(new Player(playerId, teamId, spirit, gamesPlayed, ability, cards, goalKeeper));
     m_players.makeSet(player, playerId);
 
@@ -89,4 +91,8 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 
 void world_cup_t::print() {
     m_players.print();
+}
+
+shared_ptr<Player> world_cup_t::getPlayer(int id) {
+    return m_players.find(id);
 }

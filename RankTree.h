@@ -6,6 +6,10 @@
 #define MAIN23A1_CPP_AVL_TREE_H
 #include <iostream>
 
+const bool BY_PARTIAL_SPIRIT = true;
+const bool BY_IDS = false;
+
+
 template <class T>
 class RankNode {
 private:
@@ -36,14 +40,22 @@ public:
     void      increaseWeight () {m_weight++;}
     void      decreaseWeight () {m_weight--;}
     void      updateWeight () {
-        if (m_right && m_left)
+        if (m_right && m_left) {
             m_weight = 1 + m_right->m_weight + m_left->m_weight;
-        if (m_right)
+            return;
+        }
+        if (m_right) {
             m_weight = 1 + m_right->m_weight;
-        if (m_left)
+            return;
+        }
+        if (m_left) {
             m_weight = 1 + m_left->m_weight;
-        if (!m_left && !m_right)
+            return;
+        }
+        if (!m_left && !m_right){
             m_weight = 1;
+            return;
+        }
     }
 
 };

@@ -60,15 +60,19 @@ private:
     DoubleHashing<Key, Node<Value, Value1>>* m_array;
     //Tree  of teams
     RankTree<Value1> m_teams;
+    RankTree<Value1> m_graveyard_teams;
+    RankTree<Value1> m_spirit_teams;
 
 public:
     unionFind():
             m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
-            m_teams(new RankTree<Value1*>())
+            m_teams(new RankTree<Value1*>(BY_IDS)),
+            m_graveyard_teams(new RankTree<Value1*>(BY_IDS)),
+            m_spirit_teams(new RankTree<Value1*>(BY_PARTIAL_SPIRIT))
     {}
 
 
-    Value* find(const Key &key, bool whichArr);
+    Value find(const Key &key);
     bool findGroup(const Key &key) const;
     int union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
@@ -141,6 +145,11 @@ bool unionFind<Key, Value, Value1>::findGroup(const Key &key) const {
 template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::print() {
     m_array->print();
+}
+
+template<typename Key, typename Value, typename Value1>
+Value unionFind<Key, Value, Value1>::find(const Key &key) {
+    return m_array->get(key)->getValue();
 }
 
 
