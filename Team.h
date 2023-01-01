@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "RankTree.h"
 #include "DoubleHashing.h"
-
+#include "wet2util.h"
 
 using namespace std;
 
@@ -23,6 +23,7 @@ private:
     int m_numOfGoalKeepers;
     int m_gamesPlayed;
     int m_ability;
+    permutation_t m_spiritTeam;
 
     RankTree<shared_ptr<Player>> m_teamPlayersByStats;
     RankTree<shared_ptr<Player>> m_teamPlayersByIds;

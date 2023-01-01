@@ -64,13 +64,16 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
         return StatusType::INVALID_INPUT;
     }
 
-    if (m_players.find(playerId)->getValue() || !m_players.findGroup(teamId)){
+    if (m_players.find(playerId) || !m_players.findGroup(teamId)){
         return StatusType::FAILURE;
     }
 
     // for games of player - sum the field of games play of player in the path
     shared_ptr<Team> team = m_players.findGroup(teamId);
-    int gamesOfCaptain = team->getMRootPlayer()->getGamesPlayed();
+    int gamesOfCaptain=0;
+    if (team->getMRootPlayer()){
+        gamesOfCaptain = team->getMRootPlayer()->getGamesPlayed();
+    }
 
     /// TODO: Your code goes here
     try {
