@@ -37,11 +37,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     m_players.makeSet(player, playerId);
 
 	return StatusType::SUCCESS;
-
-
-    Node<shared_ptr<Player>, shared_ptr<Team>> tmp(player);
-    if(m_teams.findInt(m_teams.getRoot(), teamId))
-        m_players.makeSet(player, playerId);
 }
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
