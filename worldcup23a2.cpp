@@ -92,3 +92,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 void world_cup_t::print() {
     m_players.print();
 }
+
+shared_ptr<Player> world_cup_t::getPlayer(int id) {
+    return m_players.find(id);
+}

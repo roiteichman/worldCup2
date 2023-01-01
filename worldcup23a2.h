@@ -40,7 +40,9 @@ public:
 	StatusType add_player(int playerId, int teamId,
 	                      const permutation_t &spirit, int gamesPlayed,
 	                      int ability, int cards, bool goalKeeper);
-	
+
+    shared_ptr<Player> getPlayer(int id);
+
 	output_t<int> play_match(int teamId1, int teamId2);
 	
 	output_t<int> num_played_games_for_player(int playerId);

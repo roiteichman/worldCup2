@@ -25,4 +25,5 @@ int main() {
     wc.add_player(7, 6, *t, 3, 4, 5, true);
     wc.add_player(7, 6, *t, 3, 4, 5, true);
     wc.print();
+    shared_ptr<Player> p15 = wc.getPlayer(15);
 }

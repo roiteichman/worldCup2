@@ -6,6 +6,10 @@
 #define MAIN23A1_CPP_AVL_TREE_H
 #include <iostream>
 
+const bool BY_PARTIAL_SPIRIT = true;
+const bool BY_IDS = false;
+
+
 template <class T>
 class RankNode {
 private:
