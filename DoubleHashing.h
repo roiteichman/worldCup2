@@ -147,7 +147,7 @@ void DoubleHashing<Key, Value>::print() {
     for (int i = 0; i < capacity; i++) {
         if (m_table[i]->key) {
             int a = m_table[i]->key;
-            std::cout <<" "<< i  << " " << m_table[i]->key;
+            std::cout <<" "<< i  << "->" << m_table[i]->key<<"\n";
         }
     }
 }
@@ -159,7 +159,7 @@ Value *DoubleHashing<Key, Value>::get(const Key &key) {
         return nullptr;
 
     Record<Key, Value> *p = m_table[index];
-    return p ? &(p->value) : nullptr;
+    return p->key ? &(p->value) : nullptr;
 }
 
 /**

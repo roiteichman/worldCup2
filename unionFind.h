@@ -73,7 +73,7 @@ public:
     int union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
     void makeSet(Value val, Key key);
-
+    void print();
     void insertGroup(const Value1 &val,const Key &key);
 };
 
@@ -136,6 +136,11 @@ void unionFind<Key, Value, Value1>::insertGroup(const Value1 &val,const Key &key
 template<typename Key, typename Value, typename Value1>
 bool unionFind<Key, Value, Value1>::findGroup(const Key &key) const {
     return m_teams.findInt(m_teams.getRoot(), key);
+}
+
+template<typename Key, typename Value, typename Value1>
+void unionFind<Key, Value, Value1>::print() {
+    m_array->print();
 }
 
 

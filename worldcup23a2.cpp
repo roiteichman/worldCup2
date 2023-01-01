@@ -91,3 +91,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 	// TODO: Your code goes here
 	return StatusType::SUCCESS;
 }
+
+void world_cup_t::print() {
+    m_players.print();
+}
