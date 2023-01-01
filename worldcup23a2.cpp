@@ -150,5 +150,5 @@ void world_cup_t::print() {
 }
 
 shared_ptr<Player> world_cup_t::getPlayer(int id) {
-    return m_players.find(id);
+    return m_players.find(id)->getValue();
 }
