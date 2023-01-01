@@ -15,15 +15,15 @@ const bool SECOND_ARRAY = false;
 template<typename Value, typename Value1>
 struct Node {
 private:
-    Value* m_value;
-    Node<Value, Value1>*    m_father;
-    Value1* m_root;
+    Value m_value;
+    Node<Value, Value1>*  m_father;
+    Value1 m_root;
 
 public:
     Node() {
         //this->value = value;
     }
-    Node(Value* value) {
+    Node(Value value) {
         m_value = value;
     }
     void setFather(Node<Value, Value1> *father)
@@ -34,7 +34,7 @@ public:
     {
         return m_father;
     }
-    Value* getValue()
+    Value getValue()
     {
         return m_value;
     }
@@ -59,7 +59,7 @@ private:
     //Array  of players
     DoubleHashing<Key, Node<Value, Value1>>* m_array;
     //Tree  of teams
-    RankTree<Value1*> m_teams;
+    RankTree<Value1> m_teams;
 
 public:
     unionFind():
@@ -72,9 +72,9 @@ public:
     bool findGroup(const Key &key) const;
     int union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
-    void makeSet(Value* val, Key key);
+    void makeSet(Value val, Key key);
 
-    void insertGroup(Value1 *val,const Key &key);
+    void insertGroup(const Value1 &val,const Key &key);
 };
 
 
@@ -107,13 +107,13 @@ int unionFind<Key, Value, Value1>::rankOfNode(Node<Value, Value1>* node) {
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::makeSet(Value *val, Key key) {
+void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
     Node<Value, Value1>* tmp = new Node<Value, Value1>(val);
-    RankNode<Value1*>* team = m_teams.findInt(m_teams.getRoot(), val->getTeamID());
+    RankNode<Value1>* team = m_teams.findInt(m_teams.getRoot(), val->getTeamID());
     if(team && !(m_array->get(key)))
     {
         this->m_array->put(val->getID(), *tmp);
-        Player* father = team->getValue()->getMRootPlayer();
+        shared_ptr<Player> father = team->getValue()->getMRootPlayer();
         if(father)
             tmp->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
         else
@@ -123,14 +123,10 @@ void unionFind<Key, Value, Value1>::makeSet(Value *val, Key key) {
             team->getValue()->setRoot(tmp->getValue());
         }
     }
-    else{
-        delete tmp;
-        delete val;
-    }
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::insertGroup(Value1 *val,const Key &key) {
+void unionFind<Key, Value, Value1>::insertGroup(const Value1 &val,const Key &key) {
     if(!m_teams.findInt(m_teams.getRoot(), key))
     {
         m_teams.insert(val);

@@ -26,7 +26,7 @@ private:
     RankTree<shared_ptr<Player>> m_teamPlayersByStats;
     RankTree<shared_ptr<Player>> m_teamPlayersByIds;
     Player* m_topScorer;
-    Player* m_rootPlayer;
+    shared_ptr<Player> m_rootPlayer;
     Team* m_closest_left;
     Team* m_closest_right;
 
@@ -41,8 +41,8 @@ public:
     bool operator< (const Team& other) const;
 
 
-    void setRoot(Player *mRootPlayer);
-    Player *getMRootPlayer() const;
+    void setRoot(shared_ptr<Player> mRootPlayer);
+    shared_ptr<Player> getMRootPlayer() const;
     void setPoints (int points);
     void setGoals (int goals);
     void setCards (int cards);

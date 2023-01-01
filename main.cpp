@@ -14,13 +14,14 @@ int main() {
     5;
     world_cup_t wc;
     permutation_t* t = new permutation_t();
-    Player* player = new Player(7, 2, *t, 3, 4, 5, true);
+    shared_ptr<Player> player(new Player(7, 2, *t, 3, 4, 5, true));
+    //Player p = player->get();
     DoubleHashing<int,int> dh;
-    unionFind<int, Player, Team> uf;
+    unionFind<int, shared_ptr<Player>, shared_ptr<Team>> uf;
     wc.add_team(2);
     wc.add_player(7, 2, *t, 3, 4, 5, true);
     wc.add_player(7, 2, *t, 3, 4, 5, true);
-    uf.makeSet(player, 7);
+    //uf.makeSet(player, 7);
     dh.put(1, c);
     //dh.print();
     dh.put(2, c);

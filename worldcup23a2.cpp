@@ -15,7 +15,7 @@ StatusType world_cup_t::add_team(int teamId)
 {
     if(!m_players.findGroup(teamId))
     {
-        Team* team = new Team(teamId);
+        shared_ptr<Team> team(new Team(teamId));
         m_players.insertGroup(team, teamId);
     }
 	// TODO: Your code goes here
@@ -33,13 +33,13 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    int ability, int cards, bool goalKeeper)
 {
 	// TODO: Your code goes here
-    Player* player = new Player(playerId, teamId, spirit, gamesPlayed, ability, cards, goalKeeper);
+    shared_ptr<Player> player(new Player(playerId, teamId, spirit, gamesPlayed, ability, cards, goalKeeper));
     m_players.makeSet(player, playerId);
 
 	return StatusType::SUCCESS;
 
 
-    Node<Player, Team> tmp(player);
+    Node<shared_ptr<Player>, shared_ptr<Team>> tmp(player);
     if(m_teams.findInt(m_teams.getRoot(), teamId))
         m_players.makeSet(player, playerId);
 }
