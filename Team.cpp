@@ -186,7 +186,7 @@ void Team::setNumOfGoalKeepers(int mNumOfGoalKeepers) {
 }
 
 bool Team::isValid() const {
-    return (m_numOfGoalKeepers) && (m_numOfPlayers>=VALID_TEAM);
+    return m_numOfGoalKeepers;
 }
 
 void Team::setRoot(shared_ptr<Player> mRootPlayer) {
