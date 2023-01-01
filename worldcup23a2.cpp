@@ -2,9 +2,13 @@
 
 const int VICTORY = 3;
 const int DRAW = 1;
-const bool TEAM1WON = false;
-const bool TEAM2WON = true;
-const bool NONE = true;
+const int NONE = 0;
+const int TEAM1WONPOINTS = 1;
+const int TEAM1WONSPIRIT = 2;
+const int TEAM2WONPOINTS = 3;
+const int TEAM2WONSPIRIT = 4;
+
+
 
 world_cup_t::world_cup_t() {
     // TODO: Your code goes here
@@ -79,17 +83,22 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
     /// TODO: Your code goes here
     try {
-        shared_ptr<Player> player(
-                new Player(playerId, teamId, spirit, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
+        shared_ptr<Player> player (new Player(playerId, teamId, spirit, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
+
         m_players.makeSet(player, playerId);
     } catch (const bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
+    }
+    if (goalKeeper){
+        team->setNumOfGoalKeepers(1);
     }
 
     return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
+
+
 
     shared_ptr<Team> team1 = m_players.findGroup(teamId1);
     shared_ptr<Team> team2 = m_players.findGroup(teamId2);
@@ -102,31 +111,36 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
         return StatusType::FAILURE;
     }
 
-    bool winner = TEAM1WON;
+    int winner;
     if (team1->isValid() && team2->isValid()) {
         if (team1->getMAbility() + team1->getPoints() < team2->getMAbility() + team2->getPoints()) {
             team2->setPoints(VICTORY);
-            winner = TEAM2WON;
+            winner = TEAM2WONPOINTS;
         }
-        if (team1->getMAbility() + team1->getPoints() == team2->getMAbility() + team2->getPoints()) {
+        else if (team1->getMAbility() + team1->getPoints() == team2->getMAbility() + team2->getPoints()) {
             if (team1->getMSpiritTeam().strength() < team2->getMSpiritTeam().strength()) {
                 team2->setPoints(VICTORY);
-                winner = TEAM2WON;
+                winner = TEAM2WONSPIRIT;
             }
-            if (team1->getMSpiritTeam().strength() == team2->getMSpiritTeam().strength()) {
+            else if (team1->getMSpiritTeam().strength() == team2->getMSpiritTeam().strength()) {
                 team1->setPoints(DRAW);
                 team2->setPoints(DRAW);
                 winner = NONE;
             }
+            else{
+                winner = TEAM1WONSPIRIT;
+            }
         }
-        if (!winner) {
+        else{
+            winner = TEAM1WONPOINTS;
             team1->setPoints(VICTORY);
         }
+
         team1->getMRootPlayer()->setGamePlayed(1);
         team2->getMRootPlayer()->setGamePlayed(1);
     }
 
-    return StatusType::SUCCESS;
+    return winner;
 }
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId) {
@@ -136,9 +150,7 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) {
     {
         return StatusType::FAILURE;
     }
-    return
     // TODO: Your code goes here
-    return 22;
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards) {
