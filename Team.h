@@ -57,6 +57,10 @@ public:
 
     void setMAbility(int mAbility);
 
+    const permutation_t &getMSpiritTeam() const;
+
+    void MulSpiritTeam(const permutation_t & mSpiritTeam);
+
     int getMAbility() const;
 
 

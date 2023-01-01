@@ -119,11 +119,19 @@ template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
     Node<Value, Value1>* playerNode = new Node<Value, Value1>(val);
     RankNode<Value1>* team = m_teams.findInt(m_teams.getRoot(), val->getTeamID());
+    // if the team exist and the player doesnt exist
     if(team && !(m_array->get(key)))
     {
-        team->getValue()->setMAbility(val->getMAbility());
+        // adding player to hash table
         this->m_array->put(val->getID(), *playerNode);
+
+        // player is first one in team
+        team->getValue()->setMAbility(val->getMAbility());
+        team->getValue()->MulSpiritTeam(val->getMSpirit());
+
         shared_ptr<Player> father = team->getValue()->getMRootPlayer();
+
+        // if not first one
         if(father)
             playerNode->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
         else {

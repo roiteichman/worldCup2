@@ -48,6 +48,8 @@ public:
 
     int getMAbility() const;
 
+    const permutation_t& getMSpirit() const;
+
     Player* getClosestLeft() const;
     Player* getClosestRight() const;
     Player* getClosest() const;

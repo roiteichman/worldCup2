@@ -2,6 +2,9 @@
 
 const int VICTORY = 3;
 const int DRAW = 1;
+const bool TEAM1WON = false;
+const bool TEAM2WON = true;
+const bool NONE = true;
 
 world_cup_t::world_cup_t() {
     // TODO: Your code goes here
@@ -18,7 +21,7 @@ StatusType world_cup_t::add_team(int teamId) {
     }
 
 
-   if (!m_players.findGroup(teamId)) {
+    if (!m_players.findGroup(teamId)) {
         shared_ptr<Team> team(new Team(teamId));
         try {
             m_players.insertGroup(team, teamId);
@@ -26,10 +29,9 @@ StatusType world_cup_t::add_team(int teamId) {
             return StatusType::ALLOCATION_ERROR;
         }
 
+    } else {
+        return StatusType::FAILURE;
     }
-   else{
-       return StatusType::FAILURE;
-   }
 
     return StatusType::SUCCESS;
 }
@@ -48,8 +50,7 @@ StatusType world_cup_t::remove_team(int teamId) {
             return StatusType::ALLOCATION_ERROR;
         }
 
-    }
-    else{
+    } else {
         return StatusType::FAILURE;
     }
 
@@ -60,24 +61,26 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    const permutation_t &spirit, int gamesPlayed,
                                    int ability, int cards, bool goalKeeper) {
 
-    if(teamId<=0 || playerId<=0 || gamesPlayed<0 || cards<0 || !spirit.isvalid() || (gamesPlayed==0 && cards>0)){
+    if (teamId <= 0 || playerId <= 0 || gamesPlayed < 0 || cards < 0 || !spirit.isvalid() ||
+        (gamesPlayed == 0 && cards > 0)) {
         return StatusType::INVALID_INPUT;
     }
 
-    if (m_players.find(playerId) || !m_players.findGroup(teamId)){
+    if (m_players.find(playerId) || !m_players.findGroup(teamId)) {
         return StatusType::FAILURE;
     }
 
     // for games of player - sum the field of games play of player in the path
     shared_ptr<Team> team = m_players.findGroup(teamId);
-    int gamesOfCaptain=0;
-    if (team->getMRootPlayer()){
+    int gamesOfCaptain = 0;
+    if (team->getMRootPlayer()) {
         gamesOfCaptain = team->getMRootPlayer()->getGamesPlayed();
     }
 
     /// TODO: Your code goes here
     try {
-        shared_ptr<Player> player(new Player(playerId, teamId, spirit, gamesPlayed-gamesOfCaptain, ability, cards, goalKeeper));
+        shared_ptr<Player> player(
+                new Player(playerId, teamId, spirit, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
         m_players.makeSet(player, playerId);
     } catch (const bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
@@ -91,25 +94,38 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
     shared_ptr<Team> team1 = m_players.findGroup(teamId1);
     shared_ptr<Team> team2 = m_players.findGroup(teamId2);
 
-    if (!team1 || !team2){
+    if (!team1 || !team2) {
         return StatusType::FAILURE;
     }
 
-    if (team1->isValid() && team2->isValid()){
-        if (team1->getMAbility()+team1->getPoints() < team2->getMAbility()+team2->getPoints()){
-            team2->setPoints(VICTORY);
-        }
-        else{
-            if (team1->getMAbility()+team1->getPoints() == team2->getMAbility()+team2->getPoints()){
+    if (!team1->isValid() || !team2->isValid()) {
+        return StatusType::FAILURE;
+    }
 
+    bool winner = TEAM1WON;
+    if (team1->isValid() && team2->isValid()) {
+        if (team1->getMAbility() + team1->getPoints() < team2->getMAbility() + team2->getPoints()) {
+            team2->setPoints(VICTORY);
+            winner = TEAM2WON;
+        }
+        if (team1->getMAbility() + team1->getPoints() == team2->getMAbility() + team2->getPoints()) {
+            if (team1->getMSpiritTeam().strength() < team2->getMSpiritTeam().strength()) {
+                team2->setPoints(VICTORY);
+                winner = TEAM2WON;
+            }
+            if (team1->getMSpiritTeam().strength() == team2->getMSpiritTeam().strength()) {
+                team1->setPoints(DRAW);
+                team2->setPoints(DRAW);
+                winner = NONE;
             }
         }
-    }
-    else {
-        return StatusType::FAILURE;
+        if (!winner) {
+            team1->setPoints(VICTORY);
+        }
+        team1->getMRootPlayer()->setGamePlayed(1);
+        team2->getMRootPlayer()->setGamePlayed(1);
     }
 
-    // TODO: Your code goes here
     return StatusType::SUCCESS;
 }
 

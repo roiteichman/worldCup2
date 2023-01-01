@@ -133,4 +133,8 @@ int Player::getMAbility() const {
     return m_ability;
 }
 
+const permutation_t& Player::getMSpirit() const {
+    return m_spirit;
+}
+
 
