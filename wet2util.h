@@ -44,17 +44,17 @@ public:
 	T ans() { return __ans; }
 };
 
-// Guaranteed for three permutation_t objects p, q, r:
-//   (neutral() * p) is the same as: p
-//   (p * neutral()) is the same as: p
-//   (p.inv() * p) is the same as: neutral()
-//   (p * p.inv()) is the same as: neutral()
-//   ((p * q) * r) is the same as: p * (q * r)
-//   (p * q).inv() is the same as: q.inv() * p.inv()
+// Guaranteed for three permutation_t objects initialValue, q, r:
+//   (neutral() * initialValue) is the same as: initialValue
+//   (initialValue * neutral()) is the same as: initialValue
+//   (initialValue.inv() * initialValue) is the same as: neutral()
+//   (initialValue * initialValue.inv()) is the same as: neutral()
+//   ((initialValue * q) * r) is the same as: initialValue * (q * r)
+//   (initialValue * q).inv() is the same as: q.inv() * initialValue.inv()
 // 
 // Non-Guarnatees:
-//   (p * q) is NOT necessarily the same as: q * p
-//   (p.inv() * (q * p)) is NOT necessarily the same as: q
+//   (initialValue * q) is NOT necessarily the same as: q * initialValue
+//   (initialValue.inv() * (q * initialValue)) is NOT necessarily the same as: q
 
 class permutation_t {
 public:

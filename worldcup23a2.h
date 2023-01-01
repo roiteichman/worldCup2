@@ -26,7 +26,6 @@ private:
 	//
 	// Here you may add anything you want
 	//
-    RankTree<Team*> m_teams;
 	unionFind<int, shared_ptr<Player>, shared_ptr<Team>> m_players;
 public:
 	// <DO-NOT-MODIFY> {

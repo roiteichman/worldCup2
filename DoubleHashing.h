@@ -90,7 +90,7 @@ private:
  @return the hashed key
  */
     int hash2(const Key &key);
-    Record<Key, Value>* p;
+    Record<Key, Value>* initialValue;
     int capacity = 7;
     int size = 0;
 
@@ -111,9 +111,9 @@ private:
  */
 template<typename Key, typename Value>
 DoubleHashing<Key, Value>::DoubleHashing():
-        p(new Record<Key, Value>(0))
+        initialValue(new Record<Key, Value>(0))
 {
-    m_table = *(new Vector<Record<Key, Value> *> (7, p));
+    m_table = *(new Vector<Record<Key, Value> *> (7, initialValue));
 }
 
 
@@ -123,7 +123,7 @@ void DoubleHashing<Key, Value>::put(const Key &key, const Value &value) {
 
     if (index > m_table.size()) {
 ///TODO
-        Vector < Record<Key, Value> * >* helpTable = new Vector < Record<Key, Value> * > (2 * capacity + 1, p);
+        Vector < Record<Key, Value> * >* helpTable = new Vector < Record<Key, Value> * > (2 * capacity + 1, initialValue);
         Vector < Record<Key, Value> * > helpTable2 = m_table;
         int tempSize = size;
         m_table = *helpTable;
@@ -168,7 +168,7 @@ Value *DoubleHashing<Key, Value>::get(const Key &key) {
 template<typename Key, typename Value>
 DoubleHashing<Key, Value>::~DoubleHashing() {
     for (int i = 0; i < m_table.size(); i++)
-        if(m_table[i] != p)
+        if(m_table[i] != initialValue)
             delete m_table[i];
 }
 
@@ -212,7 +212,7 @@ int DoubleHashing<Key, Value>::lookUp(const Key &key, int modFactor) {
  */
 template<typename Key, typename Value>
 int DoubleHashing<Key, Value>::hash2(const Key &key) {
-    return 1 + (key % m_table.size() - 1);
+    return 1 + (key % (m_table.size() - 1));
 }
 
 
