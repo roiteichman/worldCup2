@@ -7,6 +7,7 @@
 #include <memory>
 #include "Player.h"
 #include "RankTree.h"
+#include "DoubleHashing.h"
 
 
 using namespace std;

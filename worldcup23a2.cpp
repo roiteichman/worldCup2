@@ -13,6 +13,11 @@ world_cup_t::~world_cup_t()
 
 StatusType world_cup_t::add_team(int teamId)
 {
+    if(!m_players.findGroup(teamId))
+    {
+        Team* team = new Team(teamId);
+        m_players.insertGroup(team, teamId);
+    }
 	// TODO: Your code goes here
 	return StatusType::SUCCESS;
 }
@@ -35,16 +40,8 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
 
     Node<Player, Team> tmp(player);
-    Team* group =m_teams.findInt(m_teams.getRoot(), teamId)->getValue();
-    //if is first player
-    if(!group->size())
-    {
-        group->setRoot(tmp.getValue());
-    }
-    else
-    {
-        group->getMRoot(val);
-    }
+    if(m_teams.findInt(m_teams.getRoot(), teamId))
+        m_players.makeSet(player, playerId);
 }
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2)

@@ -17,6 +17,8 @@ int main() {
     Player* player = new Player(7, 2, *t, 3, 4, 5, true);
     DoubleHashing<int,int> dh;
     unionFind<int, Player, Team> uf;
+    wc.add_team(2);
+    wc.add_player(7, 2, *t, 3, 4, 5, true);
     wc.add_player(7, 2, *t, 3, 4, 5, true);
     uf.makeSet(player, 7);
     dh.put(1, c);

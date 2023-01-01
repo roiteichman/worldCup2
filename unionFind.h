@@ -7,6 +7,7 @@
 
 #include "DoubleHashing.h"
 #include "RankTree.h"
+#include "Team.h"
 
 const bool FIRST_ARRAY = true;
 const bool SECOND_ARRAY = false;
@@ -16,11 +17,7 @@ struct Node {
 private:
     Value* m_value;
     Node<Value, Value1>*    m_father;
-    RankNode<Value1>* m_root;
-public:
-    void setMRoot(Node<Value1, Value> *mRoot) {
-        m_root = mRoot;
-    }
+    Value1* m_root;
 
 public:
     Node() {
@@ -31,9 +28,9 @@ public:
     }
     void setFather(Node<Value, Value1> *father)
     {
-        this->m_next=father;
+        this->m_father=father;
     }
-    Node* getFather(Node<Value, Value1> *father)
+    Node* getFather()
     {
         return m_father;
     }
@@ -41,6 +38,15 @@ public:
     {
         return m_value;
     }
+
+    void setRoot(Value1* player) {
+    m_root = player;
+}
+
+Value1* getMRootPlayer() const {
+    return m_root;
+}
+
 
 };
 
@@ -62,12 +68,13 @@ public:
     {}
 
 
-    Value* find(Key key, bool whichArr);
+    Value* find(const Key &key, bool whichArr);
+    bool findGroup(const Key &key) const;
     int union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
     void makeSet(Value* val, Key key);
 
-    void insertGroup(Value1 *val, Key key);
+    void insertGroup(Value1 *val,const Key &key);
 };
 
 
@@ -101,29 +108,38 @@ int unionFind<Key, Value, Value1>::rankOfNode(Node<Value, Value1>* node) {
 
 template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::makeSet(Value *val, Key key) {
-    if(m_teams.findInt(m_teams.getRoot(), key))
+    Node<Value, Value1>* tmp = new Node<Value, Value1>(val);
+    RankNode<Value1*>* team = m_teams.findInt(m_teams.getRoot(), val->getTeamID());
+    if(team && !(m_array->get(key)))
     {
-        this->m_array->put(val->getID(), tmp);
-        Node<Value, Value1> tmp(val);
-        Value1* tmp1 =m_teams.findInt(m_teams.getRoot(), key)->getValue();
-        //if is first player
-        if(!tmp1->size())
-        {
-            tmp1->setRoot(tmp.getValue());
-        }
+        this->m_array->put(val->getID(), *tmp);
+        Player* father = team->getValue()->getMRootPlayer();
+        if(father)
+            tmp->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
         else
+            tmp->setFather(nullptr);
+        if(!tmp->getFather())
         {
-            tmp1->getMRoot(val);
+            team->getValue()->setRoot(tmp->getValue());
         }
+    }
+    else{
+        delete tmp;
+        delete val;
     }
 }
 
 template<typename Key, typename Value, typename Value1>
-void unionFind<Key, Value, Value1>::insertGroup(Value1 *val, Key key) {
-    if(m_teams.findInt(m_teams.getRoot(), key))
+void unionFind<Key, Value, Value1>::insertGroup(Value1 *val,const Key &key) {
+    if(!m_teams.findInt(m_teams.getRoot(), key))
     {
         m_teams.insert(val);
     }
+}
+
+template<typename Key, typename Value, typename Value1>
+bool unionFind<Key, Value, Value1>::findGroup(const Key &key) const {
+    return m_teams.findInt(m_teams.getRoot(), key);
 }
 
 
