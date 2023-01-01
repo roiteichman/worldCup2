@@ -129,4 +129,8 @@ bool Player::isGoalkeeper() const {
     return m_goalKeeper;
 }
 
+int Player::getMAbility() const {
+    return m_ability;
+}
+
 
