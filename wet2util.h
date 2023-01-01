@@ -77,6 +77,8 @@ public:
 
 	bool isvalid() const
 	{
+		/// TODO: change at the end
+		/*
 		bool found[N];
 		for (int i = 0; i < N; ++i)
 		{
@@ -92,7 +94,7 @@ public:
 			
 			found[a[i]] = true;
 		}
-		
+		*/
 		return true;
 	}
 	

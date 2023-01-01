@@ -39,8 +39,8 @@ public:
         return m_value;
     }
 
-    void setRoot(Value1* player) {
-    m_root = player;
+    void setRoot(Value1 team) {
+    m_root = team;
 }
 
 Value1* getMRootPlayer() const {
@@ -72,30 +72,35 @@ public:
     {}
 
 
-    Value find(const Key &key);
-    bool findGroup(const Key &key) const;
-    int union_(Key key1, Key key2);
+    Node<Value, Value1>* find(const Key &key);
+    Value1 findGroup(const Key &key) const;
+    void union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
     void makeSet(Value val, Key key);
     void print();
     void insertGroup(const Value1 &val,const Key &key);
+    void removeGroup(const Key &key);
 };
 
 
 
 template<typename Key, typename Value, typename Value1>
-int unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
-    Value1* group1= m_teams->find(key1)->getValue();
-    Value1* group2 = m_teams->find(key2)->getValue();
+void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
+    Value1 group1 = m_teams.findInt(m_teams.getRoot(), key1)->getValue();
+    Value1 group2 = m_teams.findInt(m_teams.getRoot(),key2)->getValue();
+
+    Node<Value, Value1>* rootOfGroup1 = find(group1->getMRootPlayer()->getID());
+    Node<Value, Value1>* rootOfGroup2 = find(group2->getMRootPlayer()->getID());
     if(group1->getSize() > group2->getSize){
-        {
-            Value* rootOfGroup1 = find(group1->getRoot()->getID());
-            Value* rootOfGroup2 = find(group2->getRoot()->getID());
-            rootOfGroup2->setFather(rootOfGroup1);
-            m_teams.remove(m_teams.getRoot(), group2);
-        }
+        rootOfGroup2->setFather(rootOfGroup1);
+        rootOfGroup2->getValue()->setGamePlayed(-rootOfGroup1->getValue()->getGamesPlayed());
+        m_teams.remove(m_teams.getRoot(), group2);
     }
-    return 1;
+    else{
+        rootOfGroup1->setFather(rootOfGroup2);
+        rootOfGroup1->getValue()->setGamePlayed(-rootOfGroup2->getValue()->getGamesPlayed());
+        m_teams.remove(m_teams.getRoot(), group1);
+    }
 }
 
 
@@ -112,19 +117,22 @@ int unionFind<Key, Value, Value1>::rankOfNode(Node<Value, Value1>* node) {
 
 template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
-    Node<Value, Value1>* tmp = new Node<Value, Value1>(val);
+    Node<Value, Value1>* playerNode = new Node<Value, Value1>(val);
     RankNode<Value1>* team = m_teams.findInt(m_teams.getRoot(), val->getTeamID());
     if(team && !(m_array->get(key)))
     {
-        this->m_array->put(val->getID(), *tmp);
+        team->getValue()->setMAbility(val->getMAbility());
+        this->m_array->put(val->getID(), *playerNode);
         shared_ptr<Player> father = team->getValue()->getMRootPlayer();
         if(father)
-            tmp->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
-        else
-            tmp->setFather(nullptr);
-        if(!tmp->getFather())
+            playerNode->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
+        else {
+            playerNode->setFather(nullptr);
+            playerNode->setRoot(team->getValue());
+        }
+        if(!playerNode->getFather())
         {
-            team->getValue()->setRoot(tmp->getValue());
+            team->getValue()->setRoot(playerNode->getValue());
         }
     }
 }
@@ -138,8 +146,11 @@ void unionFind<Key, Value, Value1>::insertGroup(const Value1 &val,const Key &key
 }
 
 template<typename Key, typename Value, typename Value1>
-bool unionFind<Key, Value, Value1>::findGroup(const Key &key) const {
-    return m_teams.findInt(m_teams.getRoot(), key);
+Value1 unionFind<Key, Value, Value1>::findGroup(const Key &key) const {
+    if(m_teams.findInt(m_teams.getRoot(), key)){
+        return m_teams.findInt(m_teams.getRoot(), key)->getValue();
+    }
+    return nullptr;
 }
 
 template<typename Key, typename Value, typename Value1>
@@ -148,8 +159,20 @@ void unionFind<Key, Value, Value1>::print() {
 }
 
 template<typename Key, typename Value, typename Value1>
-Value unionFind<Key, Value, Value1>::find(const Key &key) {
-    return m_array->get(key)->getValue();
+Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
+    if (m_array->get(key))
+        return m_array->get(key);
+    return nullptr;
+}
+
+template<typename Key, typename Value, typename Value1>
+void unionFind<Key, Value, Value1>::removeGroup(const Key &key) {
+    if (m_teams.findInt(m_teams.getRoot(), key)){
+        Value1 temp = m_teams.findInt(m_teams.getRoot(), key)->getValue();
+        m_teams.remove(m_teams.getRoot(), temp);
+        m_spirit_teams.remove(m_teams.getRoot(), temp);
+        m_graveyard_teams.insert(temp);
+    }
 }
 
 

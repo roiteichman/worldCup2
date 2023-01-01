@@ -9,7 +9,7 @@ const int VALID_TEAM = 11;
 /// TODO: change for test or real
 
 Team::Team(int teamId, int point):
-        m_teamId(teamId), m_points(point), m_sumOfGoals(0), m_sumOfCards(0), m_numOfPlayers(0), m_numOfGoalKeepers(0), m_gamesPlayed(0),
+        m_teamId(teamId), m_points(point), m_sumOfGoals(0), m_sumOfCards(0), m_numOfPlayers(0), m_numOfGoalKeepers(0), m_gamesPlayed(0), m_ability(0),
         m_teamPlayersByStats(RankTree<shared_ptr<Player>>(BY_PARTIAL_SPIRIT)), m_teamPlayersByIds(RankTree<shared_ptr<Player>>(BY_IDS)),
         m_topScorer(nullptr), m_rootPlayer(nullptr), m_closest_left(nullptr), m_closest_right(nullptr)
 {}
@@ -195,5 +195,13 @@ void Team::setRoot(shared_ptr<Player> mRootPlayer) {
 
 shared_ptr<Player> Team::getMRootPlayer() const {
     return m_rootPlayer;
+}
+
+void Team::setMAbility(int mAbility) {
+    m_ability += mAbility;
+}
+
+int Team::getMAbility() const {
+    return m_ability;
 }
 

@@ -46,6 +46,8 @@ public:
     int getCardsReceived () const;
     bool isGoalkeeper() const;
 
+    int getMAbility() const;
+
     Player* getClosestLeft() const;
     Player* getClosestRight() const;
     Player* getClosest() const;

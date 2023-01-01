@@ -22,6 +22,7 @@ private:
     int m_numOfPlayers;
     int m_numOfGoalKeepers;
     int m_gamesPlayed;
+    int m_ability;
 
     RankTree<shared_ptr<Player>> m_teamPlayersByStats;
     RankTree<shared_ptr<Player>> m_teamPlayersByIds;
@@ -52,6 +53,10 @@ public:
     void setClosestLeft (Team* left);
     void setClosestRight (Team* right);
     void setNumOfGoalKeepers(int mNumOfGoalKeepers);
+
+    void setMAbility(int mAbility);
+
+    int getMAbility() const;
 
 
     void removePlayer (shared_ptr<Player> player);
