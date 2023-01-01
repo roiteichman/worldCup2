@@ -25,6 +25,7 @@ public:
     }
     Node(Value value) {
         m_value = value;
+        m_father=nullptr;
     }
     void setFather(Node<Value, Value1> *father)
     {
@@ -167,9 +168,28 @@ void unionFind<Key, Value, Value1>::print() {
 }
 
 template<typename Key, typename Value, typename Value1>
-Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
-    if (m_array->get(key))
+    Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
+    Node<Value, Value1>* tempNode = m_array->get(key);
+    Node<Value, Value1>* tempNode2 = tempNode;
+    Node<Value, Value1>* tempNode2Father;
+    if(tempNode)
+        tempNode2Father= tempNode2->getFather();
+    else
+        tempNode2Father = nullptr;
+    if (tempNode) {
+        while (tempNode->getFather())
+        {
+            if(tempNode->getFather())
+                 tempNode=tempNode->getFather();
+            //now tempNode is root
+        }
+        while (tempNode2Father) {
+            tempNode2Father=tempNode2->getFather();
+            tempNode2->setFather(tempNode);
+            tempNode2 = tempNode2Father;
+        }
         return m_array->get(key);
+    }
     return nullptr;
 }
 
