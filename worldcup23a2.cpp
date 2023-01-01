@@ -130,6 +130,13 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
 }
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId) {
+    if (playerId<=0)
+        return StatusType::INVALID_INPUT;
+    if(!m_players.find(playerId))
+    {
+        return StatusType::FAILURE;
+    }
+    return
     // TODO: Your code goes here
     return 22;
 }
