@@ -64,9 +64,9 @@ private:
 public:
     unionFind():
             m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
-            m_teams(new RankTree<Value1*>(BY_IDS)),
-            m_graveyard_teams(new RankTree<Value1*>(BY_IDS)),
-            m_spirit_teams(new RankTree<Value1*>(BY_PARTIAL_SPIRIT))
+            m_teams(*new RankTree<Value1>(BY_IDS)),
+            m_graveyard_teams(*new RankTree<Value1>(BY_IDS)),
+            m_spirit_teams(*new RankTree<Value1>(BY_PARTIAL_SPIRIT))
     {}
 
 
@@ -177,7 +177,7 @@ template<typename Key, typename Value, typename Value1>
     Node<Value, Value1>* tempNode2 = tempNode;
     Node<Value, Value1>* tempNode2Father;
 
-    if(tempNode)
+        if(tempNode)
         tempNode2Father= tempNode2->getFather();
     else
         tempNode2Father = nullptr;

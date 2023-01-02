@@ -31,6 +31,7 @@ int main() {
     wc.add_player_cards(7, 4);
     output_t<int> cards = wc.get_player_cards(7);
     output_t<int> winnerBy = wc.play_match(2, 4);
+    output_t<int> ou = wc.get_team_points(2);
     StatusType st = wc.remove_team(2);
     StatusType st1 = wc.remove_team(2);
 
