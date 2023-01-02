@@ -141,4 +141,9 @@ const permutation_t& Player::getMSpirit() const {
     return m_spirit;
 }
 
+void Player::MulSpiritPlayer(const permutation_t &mSpiritPlayer) {
+    m_spirit = this->m_spirit.operator*(mSpiritPlayer);
+
+}
+
 

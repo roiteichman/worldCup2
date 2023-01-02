@@ -259,6 +259,42 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
 }
 
 StatusType world_cup_t::buy_team(int teamId1, int teamId2) {
+
+    if(teamId1==teamId2 || teamId1<=0 || teamId2<=0){
+        return StatusType::INVALID_INPUT;
+    }
+    // find the groups in log(k)
+    shared_ptr<Team> buyerTeam = m_players.findGroup(teamId1);
+    shared_ptr<Team> boughtTeam = m_players.findGroup(teamId2);
+
+    if (!buyerTeam || !boughtTeam){
+        return StatusType::FAILURE;
+    }
+    // buyerTeam is bigger than boughtTeam
+    if (buyerTeam->getMNumOfPlayers()>=boughtTeam->getMNumOfPlayers()){
+        boughtTeam->getMRootPlayer()->increaseGamePlayed(-buyerTeam->getMRootPlayer()->getGamesPlayed());
+        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam()*buyerTeam->getMRootPlayer()->getMSpirit().inv());
+        buyerTeam->MulSpiritTeam(boughtTeam->getMSpiritTeam());
+        buyerTeam->setPoints()
+        m_players.union_(teamId1,teamId2);
+    }
+    else {
+        buyerTeam->getMRootPlayer()->increaseGamePlayed(-boughtTeam->getMRootPlayer()->getGamesPlayed());
+
+        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam());
+        buyerTeam->getMRootPlayer()->MulSpiritPlayer(boughtTeam->getMRootPlayer()->getMSpirit().inv());
+        buyerTeam->MulSpiritTeam(boughtTeam->getMSpiritTeam());
+        ///TODO: change name of team
+
+        m_players.union_(teamId1,teamId2);
+
+
+
+        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam()*buyerTeam->getMRootPlayer()->getMSpirit().inv());
+
+    }
+
+
     // TODO: Your code goes here
     return StatusType::SUCCESS;
 }

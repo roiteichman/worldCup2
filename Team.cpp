@@ -208,8 +208,8 @@ const permutation_t &Team::getMSpiritTeam() const {
     return m_spiritTeam;
 }
 
-void Team::MulSpiritTeam(const permutation_t & mSpiritTeam) {
-    m_spiritTeam = this->m_spiritTeam.operator*(mSpiritTeam);
+void Team::MulSpiritTeam(const permutation_t & mSpiritPlayer) {
+    m_spiritTeam = this->m_spiritTeam.operator*(mSpiritPlayer);
 }
 
 void Team::setMKickedOut(bool mKickedOut) {
@@ -236,5 +236,9 @@ Player *Team::getMLastPlayer() const {
 
 void Team::setMLastPlayer(Player *mLastPlayer) {
     m_lastPlayer = mLastPlayer;
+}
+
+int Team::getMNumOfPlayers() const {
+    return m_numOfPlayers;
 }
 

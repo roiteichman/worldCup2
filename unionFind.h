@@ -96,11 +96,13 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
         rootOfGroup2->setFather(rootOfGroup1);
         rootOfGroup2->getValue()->setGamePlayed(-rootOfGroup1->getValue()->getGamesPlayed());
         m_teams->remove(m_teams->getRoot(), group2);
+        m_spirit_teams->remove(m_spirit_teams->getRoot(), group2);
     }
     else{
         rootOfGroup1->setFather(rootOfGroup2);
         rootOfGroup1->getValue()->setGamePlayed(-rootOfGroup2->getValue()->getGamesPlayed());
         m_teams->remove(m_teams->getRoot(), group1);
+        m_spirit_teams->remove(m_spirit_teams->getRoot(), group1);
     }
 }
 

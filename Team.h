@@ -26,11 +26,6 @@ private:
     permutation_t m_spiritTeam;
     bool m_kickedOut;
     Player* m_lastPlayer =nullptr;
-public:
-    void setMLastPlayer(Player *mLastPlayer);
-
-public:
-    Player *getMLastPlayer() const;
 
 private:
 
@@ -62,6 +57,10 @@ public:
     void setClosestLeft (Team* left);
     void setClosestRight (Team* right);
     void setNumOfGoalKeepers(int mNumOfGoalKeepers);
+    Player *getMLastPlayer() const;
+    void setMLastPlayer(Player *mLastPlayer);
+
+    int getMNumOfPlayers() const;
 
     void setMAbility(int mAbility);
 
@@ -71,7 +70,7 @@ public:
 
     const permutation_t &getMSpiritTeam() const;
 
-    void MulSpiritTeam(const permutation_t & mSpiritTeam);
+    void MulSpiritTeam(const permutation_t & mSpiritPlayer);
 
     int getMAbility() const;
 
