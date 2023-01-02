@@ -9,7 +9,7 @@
 int main() {
     world_cup_t wc;
     int a[5]  = {0,1,3,4,2};
-    int b[5]  = {1,2,3,4,2};
+    int b[5]  = {1,2,3,4,0};
     int c[5]  = {1,2,3,4,0};
     wc.add_team(2);
     wc.add_player(7, 2, a, 3, 4, 5, true);
@@ -35,6 +35,7 @@ int main() {
     output_t<int> ou = wc.get_team_points(2);
     StatusType st = wc.remove_team(2);
     StatusType st1 = wc.remove_team(2);
+    output_t<permutation_t> per = wc.get_partial_spirit(8);
 
 
 

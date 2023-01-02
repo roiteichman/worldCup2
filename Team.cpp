@@ -230,3 +230,11 @@ bool Team::operator<(const Team &other) const {
     return false;
 }
 
+Player *Team::getMLastPlayer() const {
+    return m_lastPlayer;
+}
+
+void Team::setMLastPlayer(Player *mLastPlayer) {
+    m_lastPlayer = mLastPlayer;
+}
+

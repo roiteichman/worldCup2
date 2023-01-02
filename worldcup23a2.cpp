@@ -76,21 +76,20 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     // for games of player - sum the field of games play of player in the path
     shared_ptr<Team> team = m_players.findGroup(teamId);
     int gamesOfCaptain = 0;
+    permutation_t invOfRoot = permutation_t::neutral();
     if (team->getMRootPlayer()) {
         gamesOfCaptain = team->getMRootPlayer()->getGamesPlayed();
-    }
-    permutation_t invOfRoot = permutation_t::neutral();
-    if (team->getMRootPlayer())
-    {
         invOfRoot = team->getMRootPlayer()->getMSpirit().inv();
     }
-
+    team->MulSpiritTeam(spirit);
     /// TODO: Your code goes here
     try {
         shared_ptr<Player> player(
-                new Player(playerId, teamId, spirit*team->getMSpiritTeam()*invOfRoot, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
+                new Player(playerId, teamId, invOfRoot*team->getMSpiritTeam(), gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
         m_players.makeSet(player, playerId);
+        team->setMLastPlayer(player.get());
     } catch (const bad_alloc &e) {
+        team->MulSpiritTeam(spirit.inv());
         return StatusType::ALLOCATION_ERROR;
     }
 
@@ -226,8 +225,14 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i) {
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
-    // TODO: Your code goes here
-    return permutation_t();
+    Node<shared_ptr<Player>, shared_ptr<Team>>* player = m_players.find(playerId);
+    permutation_t res = player->getValue()->getMSpirit();
+    while(player->getFather())
+    {
+        res = player->getFather()->getValue()->getMSpirit()*res;
+        player = player->getFather();
+    }
+    return res;
 }
 
 StatusType world_cup_t::buy_team(int teamId1, int teamId2) {

@@ -126,7 +126,7 @@ void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
 
         // player is first one in team
         team->getValue()->setMAbility(val->getMAbility());
-        team->getValue()->MulSpiritTeam(val->getMSpirit());
+
 
         shared_ptr<Player> father = team->getValue()->getMRootPlayer();
 
@@ -190,15 +190,18 @@ template<typename Key, typename Value, typename Value1>
         // first round searching the root
         while (tempNode->getFather())
         {
-            if(tempNode->getFather())
+            if(tempNode->getFather()) {
                 // sum all the gamesPlayed without the root
                 sumGames += tempNode->getValue()->getGamesPlayed();
-                tempNode=tempNode->getFather();
+                tempNode = tempNode->getFather();
+            }
             //now tempNode is root
         }
         // second round making all the nodes in the path from the leaf to the root, sons of the root
         while (tempNode2Father) {
             tempNode2Father=tempNode2->getFather();
+            if(!tempNode2Father)
+                break;
             int temp = tempNode2->getValue()->getGamesPlayed();
             tempNode2->getValue()->setGamePlayed(sumGames - toSub);
             toSub += temp;

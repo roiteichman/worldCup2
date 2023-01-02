@@ -25,6 +25,14 @@ private:
     int m_ability;
     permutation_t m_spiritTeam;
     bool m_kickedOut;
+    Player* m_lastPlayer =nullptr;
+public:
+    void setMLastPlayer(Player *mLastPlayer);
+
+public:
+    Player *getMLastPlayer() const;
+
+private:
 
     RankTree<shared_ptr<Player>> m_teamPlayersByStats;
     RankTree<shared_ptr<Player>> m_teamPlayersByIds;
