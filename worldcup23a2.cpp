@@ -165,13 +165,18 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards) {
     }
     Node<shared_ptr<Player>, shared_ptr<Team>>* playerNode = m_players.find(playerId);
     // after find, the playerNode is son of the root
-    shared_ptr<Team> team = playerNode->getFather()->getMRoot();
+    Node<shared_ptr<Player>, shared_ptr<Team>>* fatherNode = playerNode->getFather();
+    shared_ptr<Team> team;
+    if (fatherNode)
+        team = fatherNode->getMRoot();
+    else {
+        team = playerNode->getMRoot();
+    }
     // if there is no player like that or the team kicked out
     if (team->isMKickedOut() || !playerNode->getValue()){
         return StatusType::FAILURE;
     }
     playerNode->getValue()->setCards(cards);
-
     return StatusType::SUCCESS;
 }
 

@@ -20,13 +20,10 @@ private:
     Value1 m_root;
 
 public:
-    Node() {
-        //this->value = value;
-    }
-    Node(Value value) {
-        m_value = value;
-        m_father=nullptr;
-    }
+    Node(): m_father(nullptr), m_root(nullptr)
+    {}
+    Node(Value value): m_value(value), m_father(nullptr), m_root(nullptr)
+    {}
     void setFather(Node<Value, Value1> *father)
     {
         this->m_father=father;
@@ -123,8 +120,6 @@ void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
     // if the team exist and the player doesnt exist
     if(team && !(m_array->get(key)))
     {
-        // adding player to hash table
-        this->m_array->put(val->getID(), *playerNode);
 
         // player is first one in team
         team->getValue()->setMAbility(val->getMAbility());
@@ -138,11 +133,12 @@ void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
         else {
             playerNode->setFather(nullptr);
             playerNode->setRoot(team->getValue());
+            team->getValue()->setRoot(val);
         }
-        if(!playerNode->getFather())
-        {
-            team->getValue()->setRoot(playerNode->getValue());
-        }
+        // adding player to hash table
+        this->m_array->put(val->getID(), *playerNode);
+
+        delete playerNode;
     }
 }
 

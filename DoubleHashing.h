@@ -29,10 +29,8 @@ struct Record {
  @param key the record key
  @param value the record value
  */
-    Record(const Key &key, const Value &value) {
-        this->key = key;
-        this->value = value;
-    }
+    Record(const Key &key, const Value &value): key(key), value(value)
+    {}
     Record(const Key &key) {
         this->key = key;
         //this->value = NULL;
