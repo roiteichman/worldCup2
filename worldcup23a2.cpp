@@ -185,8 +185,16 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards) {
 }
 
 output_t<int> world_cup_t::get_player_cards(int playerId) {
-    // TODO: Your code goes here
-    return StatusType::SUCCESS;
+
+    if (playerId<=0){
+        return StatusType::INVALID_INPUT;
+    }
+    // find in O(1) the player
+    shared_ptr<Player> player = m_players.findPlayer(playerId);
+    if (player){
+        return player->getCardsReceived();
+    }
+    return StatusType::FAILURE;
 }
 
 output_t<int> world_cup_t::get_team_points(int teamId) {
