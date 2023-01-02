@@ -66,7 +66,7 @@ public:
             m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
             m_teams(*new RankTree<Value1>(BY_IDS)),
             m_graveyard_teams(*new RankTree<Value1>(BY_IDS)),
-            m_spirit_teams(*new RankTree<Value1>(BY_PARTIAL_SPIRIT))
+            m_spirit_teams(*new RankTree<Value1>(BY_ABILITY))
     {}
 
 
