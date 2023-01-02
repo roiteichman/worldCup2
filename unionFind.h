@@ -66,7 +66,7 @@ public:
             m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
             m_teams(new RankTree<Value1*>(BY_IDS)),
             m_graveyard_teams(new RankTree<Value1*>(BY_IDS)),
-            m_spirit_teams(new RankTree<Value1*>(BY_PARTIAL_SPIRIT))
+            m_spirit_teams(new RankTree<Value1*>(BY_ABILITY))
     {}
 
 
@@ -148,7 +148,9 @@ void unionFind<Key, Value, Value1>::insertGroup(const Value1 &val,const Key &key
     if(!m_teams.findInt(m_teams.getRoot(), key))
     {
         m_teams.insert(val);
+        m_spirit_teams.insert(val);
     }
+
 }
 
 template<typename Key, typename Value, typename Value1>

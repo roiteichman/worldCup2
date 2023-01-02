@@ -11,7 +11,7 @@ const int VALID_TEAM = 11;
 Team::Team(int teamId, int point):
         m_teamId(teamId), m_points(point), m_sumOfGoals(0), m_sumOfCards(0), m_numOfPlayers(0), m_numOfGoalKeepers(0),
         m_gamesPlayed(0), m_ability(0), m_spiritTeam(permutation_t::neutral()), m_kickedOut(false),
-        m_teamPlayersByStats(RankTree<shared_ptr<Player>>(BY_PARTIAL_SPIRIT)),
+        m_teamPlayersByStats(RankTree<shared_ptr<Player>>(BY_ABILITY)),
         m_teamPlayersByIds(RankTree<shared_ptr<Player>>(BY_IDS)),
         m_topScorer(nullptr), m_rootPlayer(nullptr), m_closest_left(nullptr), m_closest_right(nullptr)
 {}
