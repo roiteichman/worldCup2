@@ -190,8 +190,12 @@ output_t<int> world_cup_t::get_player_cards(int playerId) {
 }
 
 output_t<int> world_cup_t::get_team_points(int teamId) {
-    // TODO: Your code goes here
-    return 30003;
+    if(teamId<=0)
+        return StatusType::INVALID_INPUT;
+    if(m_players.findGroup(teamId))
+        return m_players.findGroup(teamId)->getPoints();
+    else
+        return StatusType::FAILURE;
 }
 
 output_t<int> world_cup_t::get_ith_pointless_ability(int i) {
