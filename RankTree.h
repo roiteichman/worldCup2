@@ -6,7 +6,7 @@
 #define MAIN23A1_CPP_AVL_TREE_H
 #include <iostream>
 
-const bool BY_PARTIAL_SPIRIT = true;
+const bool BY_ABILITY = true;
 const bool BY_IDS = false;
 
 
@@ -91,7 +91,7 @@ public:
     void printInOrderByID  (RankNode<T>* root, int *const output, int& i) ; // Left, Parent, Right
     void printInOrder  (RankNode<T>* root, T *const output, int& i) ; // Left, Parent, Right
     RankNode<T> *sortedArrayToAVL(T* arr, int start, int end);
-    void insertRankNodeByStats(RankNode<T>* root, RankNode<T>* newNode);
+    void insertRankNodeByAbility(RankNode<T>* root, RankNode<T>* newNode);
     void insertRankNodeByIds(RankNode<T>* root, RankNode<T>* newNode);
 
 
@@ -133,7 +133,7 @@ bool RankTree<T>::insert(const T& value) {
     }
     else {
         if (m_orderBy)
-            insertRankNodeByStats(m_root, newNode);
+            insertRankNodeByAbility(m_root, newNode);
         else
             insertRankNodeByIds(m_root, newNode);
     }
@@ -141,13 +141,13 @@ bool RankTree<T>::insert(const T& value) {
 }
 
 template <class T>
-void RankTree<T>::insertRankNodeByStats(RankNode<T>* root, RankNode<T>* newNode) {
+void RankTree<T>::insertRankNodeByAbility(RankNode<T>* root, RankNode<T>* newNode) {
     // if the node exist we catch it from outside
     // Binary Search Tree insertion algorithm
     // comparing by the value of the pointer
     if(*(newNode->getValue()) < *(root->getValue()) ) {
         if(root->getLeft() ) // If there is a left child, keep searching
-            insertRankNodeByStats(root->getLeft(), newNode);
+            insertRankNodeByAbility(root->getLeft(), newNode);
         else { // Found the right spot
             root->setLeft(newNode);
             newNode->setParent(root);
@@ -155,7 +155,7 @@ void RankTree<T>::insertRankNodeByStats(RankNode<T>* root, RankNode<T>* newNode)
     }
     else {
         if(root->getRight() ) // If there is a right child, keep searching
-            insertRankNodeByStats(root->getRight(), newNode);
+            insertRankNodeByAbility(root->getRight(), newNode);
         else {// Found the right spot
             root->setRight(newNode);
             newNode->setParent(root);
