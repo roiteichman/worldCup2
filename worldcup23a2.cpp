@@ -34,7 +34,7 @@ StatusType world_cup_t::add_team(int teamId) {
     } else {
         return StatusType::FAILURE;
     }
-
+    increaseNumOfTeams();
     return StatusType::SUCCESS;
 }
 
@@ -56,6 +56,7 @@ StatusType world_cup_t::remove_team(int teamId) {
         return StatusType::FAILURE;
     }
 
+    decreaseNumOfTeams();
     return StatusType::SUCCESS;
 }
 
@@ -211,8 +212,12 @@ output_t<int> world_cup_t::get_team_points(int teamId) {
 }
 
 output_t<int> world_cup_t::get_ith_pointless_ability(int i) {
-    // TODO: Your code goes here
-    return 12345;
+
+    if(!getMNumOfTeams() || getMNumOfTeams()<= i || i<0){
+        return StatusType::FAILURE;
+    }
+    RankTree<shared_ptr<Team>> tree = m_players.getMSpiritTeams();
+    return tree.select(i+1, tree.getRoot())->getValue()->getID();
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
@@ -231,4 +236,15 @@ void world_cup_t::print() {
 
 shared_ptr<Player> world_cup_t::getPlayer(int id) {
     return m_players.find(id)->getValue();
+}
+
+void world_cup_t::decreaseNumOfTeams() {
+    m_numOfTeams--;
+}
+void world_cup_t::increaseNumOfTeams() {
+    m_numOfTeams++;
+}
+
+int world_cup_t::getMNumOfTeams() const {
+    return m_numOfTeams;
 }

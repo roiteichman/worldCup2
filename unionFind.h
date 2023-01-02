@@ -79,6 +79,8 @@ public:
     void print();
     void insertGroup(const Value1 &val,const Key &key);
     void removeGroup(const Key &key);
+
+    const RankTree<Value1> &getMSpiritTeams() const;
 };
 
 
@@ -148,6 +150,7 @@ void unionFind<Key, Value, Value1>::insertGroup(const Value1 &val,const Key &key
     if(!m_teams.findInt(m_teams.getRoot(), key))
     {
         m_teams.insert(val);
+        m_spirit_teams.insert(val);
     }
 }
 
@@ -218,7 +221,10 @@ void unionFind<Key, Value, Value1>::removeGroup(const Key &key) {
     }
 }
 
-
+template<typename Key, typename Value, typename Value1>
+const RankTree<Value1> &unionFind<Key, Value, Value1>::getMSpiritTeams() const {
+    return m_spirit_teams;
+}
 
 
 #endif //AVLTREE_H_UNIONFIND_H

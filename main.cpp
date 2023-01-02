@@ -15,6 +15,7 @@ int main() {
     wc.add_player(7, 2, a, 3, 4, 5, true);
     wc.add_player(8, 2, b, 3, 4, 5, true);
     wc.add_team(3);
+    output_t<int> teamID = wc.get_ith_pointless_ability(0);
     wc.add_player(15, 3, b, 3, 4, 5, true);
     wc.add_player(9, 3, c, 3, -2, 5, true);
     wc.add_team(4);

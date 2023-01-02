@@ -27,6 +27,7 @@ private:
 	// Here you may add anything you want
 	//
 	unionFind<int, shared_ptr<Player>, shared_ptr<Team>> m_players;
+    int m_numOfTeams = 0;
 public:
 	// <DO-NOT-MODIFY> {
 	
@@ -36,8 +37,15 @@ public:
 	StatusType add_team(int teamId);
 	
 	StatusType remove_team(int teamId);
-	
-	StatusType add_player(int playerId, int teamId,
+
+    void decreaseNumOfTeams();
+
+    void increaseNumOfTeams();
+
+    int getMNumOfTeams() const;
+
+
+    StatusType add_player(int playerId, int teamId,
 	                      const permutation_t &spirit, int gamesPlayed,
 	                      int ability, int cards, bool goalKeeper);
 

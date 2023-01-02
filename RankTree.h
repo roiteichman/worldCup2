@@ -37,6 +37,7 @@ public:
     void      removeData () { m_data = nullptr; }
     void      setHeight (int maxHeight) { m_height = maxHeight;}
     int       getHeight () const {return m_height;}
+    int       getWeight() const {return m_weight;}
     void      increaseWeight () {m_weight++;}
     void      decreaseWeight () {m_weight--;}
     void      updateWeight () {
@@ -84,6 +85,8 @@ public:
     int maxHeight (const RankNode<T>* root) const;
     int  balanceFactor(RankNode<T>* root) const;
     void balanceTheTree(RankNode<T>* root);
+    RankNode<T>* select(int k, RankNode<T>* root);
+    int weightLeftSon(RankNode<T>* root);
 
     void rotateLeft (RankNode<T>* B);
     void rotateRight(RankNode<T>* C);
@@ -526,6 +529,31 @@ RankNode<T>* RankTree<T>::sortedArrayToAVL(T* arr, int start, int end)
 template<class T>
 void RankTree<T>::setMRoot(RankNode<T> *mRoot) {
     m_root = mRoot;
+}
+
+template<class T>
+RankNode<T> *RankTree<T>::select(int k, RankNode<T>* root) {
+    if (weightLeftSon(root)==k-1){
+        return root;
+    }
+    else if(weightLeftSon(root)>k-1){
+        root = root->getLeft();
+        select(k, root);
+    }
+    else{
+        int newK = k-weightLeftSon(root);
+        root = root->getRight();
+        select(newK, root);
+    }
+}
+template<class T>
+int RankTree<T>::weightLeftSon(RankNode<T>* root) {
+    if (root->getLeft()){
+        return root->getLeft()->getWeight();
+    }
+    else{
+        return 0;
+    }
 }
 
 #endif //MAIN23A1_CPP_AVL_TREE_H
