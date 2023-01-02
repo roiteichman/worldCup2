@@ -29,6 +29,7 @@ int main() {
     wc.print();
     shared_ptr<Player> p15 = wc.getPlayer(15);
     wc.add_player_cards(7, 4);
+    output_t<int> cards = wc.get_player_cards(7);
     output_t<int> winnerBy = wc.play_match(2, 4);
     StatusType st = wc.remove_team(2);
     StatusType st1 = wc.remove_team(2);

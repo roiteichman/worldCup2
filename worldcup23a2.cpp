@@ -88,6 +88,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
         return StatusType::ALLOCATION_ERROR;
     }
 
+    if (goalKeeper)
+        team->setNumOfGoalKeepers(1);
+
     return StatusType::SUCCESS;
 }
 
