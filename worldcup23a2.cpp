@@ -90,6 +90,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
     if (goalKeeper)
         team->setNumOfGoalKeepers(1);
+    team->setMNumOfPlayers(1);
 
     return StatusType::SUCCESS;
 }
