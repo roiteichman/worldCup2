@@ -160,6 +160,9 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) {
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards) {
 
+    if (playerId<=0 || cards<0){
+        return StatusType::INVALID_INPUT;
+    }
     Node<shared_ptr<Player>, shared_ptr<Team>>* playerNode = m_players.find(playerId);
     // after find, the playerNode is son of the root
     shared_ptr<Team> team = playerNode->getFather()->getMRoot();
@@ -167,8 +170,8 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards) {
     if (team->isMKickedOut() || !playerNode->getValue()){
         return StatusType::FAILURE;
     }
+    playerNode->getValue()->setCards(cards);
 
-    // TODO: Your code goes here
     return StatusType::SUCCESS;
 }
 

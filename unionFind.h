@@ -130,11 +130,11 @@ void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
         team->getValue()->setMAbility(val->getMAbility());
         team->getValue()->MulSpiritTeam(val->getMSpirit());
 
-        shared_ptr<Player> father = team->getValue()->getMRoot();
+        shared_ptr<Player> father = team->getValue()->getMRootPlayer();
 
         // if not first one
         if(father)
-            playerNode->setFather(m_array->get(team->getValue()->getMRoot()->getID()));
+            playerNode->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
         else {
             playerNode->setFather(nullptr);
             playerNode->setRoot(team->getValue());
