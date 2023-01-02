@@ -216,8 +216,8 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i) {
     if(!getMNumOfTeams() || getMNumOfTeams()<= i || i<0){
         return StatusType::FAILURE;
     }
-    RankTree<shared_ptr<Team>> tree = m_players.getMSpiritTeams();
-    return tree.select(i+1, tree.getRoot())->getValue()->getID();
+    RankTree<shared_ptr<Team>>* tree = m_players.getMSpiritTeams();
+    return tree->select(i+1, tree->getRoot())->getValue()->getID();
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
