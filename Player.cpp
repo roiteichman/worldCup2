@@ -30,6 +30,10 @@ bool Player::operator>(const Player &other) const {
 
 
 void Player::setGamePlayed(int gamesPlayed) {
+    m_gamePlayed = gamesPlayed;
+}
+
+void Player::increaseGamePlayed(int gamesPlayed) {
     m_gamePlayed += gamesPlayed;
 }
 

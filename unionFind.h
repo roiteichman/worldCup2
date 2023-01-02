@@ -172,19 +172,29 @@ template<typename Key, typename Value, typename Value1>
     Node<Value, Value1>* tempNode = m_array->get(key);
     Node<Value, Value1>* tempNode2 = tempNode;
     Node<Value, Value1>* tempNode2Father;
+
     if(tempNode)
         tempNode2Father= tempNode2->getFather();
     else
         tempNode2Father = nullptr;
+    int sumGames = 0;
+    int toSub =0;
     if (tempNode) {
+        // first round searching the root
         while (tempNode->getFather())
         {
             if(tempNode->getFather())
-                 tempNode=tempNode->getFather();
+                // sum all the gamesPlayed without the root
+                sumGames += tempNode->getValue()->getGamesPlayed();
+                tempNode=tempNode->getFather();
             //now tempNode is root
         }
+        // second round making all the nodes in the path from the leaf to the root, sons of the root
         while (tempNode2Father) {
             tempNode2Father=tempNode2->getFather();
+            int temp = tempNode2->getValue()->getGamesPlayed();
+            tempNode2->getValue()->setGamePlayed(sumGames - toSub);
+            toSub += temp;
             tempNode2->setFather(tempNode);
             tempNode2 = tempNode2Father;
         }

@@ -34,6 +34,7 @@ public:
     bool operator< (const Player& other) const;
     bool operator> (const Player& other) const;
     void setGamePlayed (int gamesPlayed);
+    void increaseGamePlayed(int gamesPlayed);
     void setGoals (int goals);
     void setCards (int cardsReceived);
     void setClosestLeft (Player* left);

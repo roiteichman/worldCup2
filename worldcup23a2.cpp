@@ -136,8 +136,8 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
             team1->setPoints(VICTORY);
         }
 
-        team1->getMRootPlayer()->setGamePlayed(1);
-        team2->getMRootPlayer()->setGamePlayed(1);
+        team1->getMRootPlayer()->increaseGamePlayed(1);
+        team2->getMRootPlayer()->increaseGamePlayed(1);
     }
 
     return winner;
