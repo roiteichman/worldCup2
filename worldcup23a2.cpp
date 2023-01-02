@@ -177,6 +177,10 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards) {
         return StatusType::INVALID_INPUT;
     }
     Node<shared_ptr<Player>, shared_ptr<Team>>* playerNode = m_players.find(playerId);
+    if(!playerNode)
+    {
+        return StatusType::FAILURE;
+    }
     // after find, the playerNode is son of the root
     Node<shared_ptr<Player>, shared_ptr<Team>>* fatherNode = playerNode->getFather();
     shared_ptr<Team> team;
@@ -225,8 +229,27 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i) {
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
+    if(playerId<=0)
+    {
+        return  StatusType::INVALID_INPUT;
+    }
     Node<shared_ptr<Player>, shared_ptr<Team>>* player = m_players.find(playerId);
+    if(!player)
+    {
+        return StatusType::FAILURE;
+    }
+    Node<shared_ptr<Player>, shared_ptr<Team>>* fatherNode= player->getFather();
     permutation_t res = player->getValue()->getMSpirit();
+    shared_ptr<Team> team;
+    if (fatherNode)
+        team = fatherNode->getMRoot();
+    else {
+        team = player->getMRoot();
+    }
+    // if there is no player like that or the team kicked out
+    if (team->isMKickedOut() || !player->getValue()){
+        return StatusType::FAILURE;
+    }
     while(player->getFather())
     {
         res = res.operator*(player->getFather()->getValue()->getMSpirit());
