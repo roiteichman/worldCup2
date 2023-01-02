@@ -41,8 +41,7 @@ public:
     Team& operator = (const Team& team) = delete;
 
     bool operator> (const Team& other) const;
-    bool operator< (const Team& other) const;
-
+    bool operator<(const Team &other) const;
 
     void setRoot(shared_ptr<Player> mRootPlayer);
     shared_ptr<Player> getMRootPlayer() const;
@@ -87,7 +86,6 @@ public:
     void increaseGamesPlayed(int gamesPlayed);
     void update_top_scorer(shared_ptr<Player> player);
     bool isValid() const;
-
 
 
     RankTree<shared_ptr<struct Player>> & getTeamPlayerByStats ();

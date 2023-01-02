@@ -52,9 +52,6 @@ bool Team::operator>(const Team &other) const {
     return m_teamId>other.m_teamId;
 }
 
-bool Team::operator<(const Team &other) const {
-    return m_teamId<other.m_teamId;
-}
 
 void Team::removePlayer(shared_ptr<Player> player) {
     m_sumOfGoals -= player->getGoalsScored();
@@ -221,5 +218,15 @@ void Team::setMKickedOut(bool mKickedOut) {
 
 bool Team::isMKickedOut() const {
     return m_kickedOut;
+}
+
+bool Team::operator<(const Team &other) const {
+    if (this->m_ability < other.getMAbility())
+        return true;
+    if (this->m_ability == other.getMAbility()) {
+        if (this->m_teamId < other.getID())
+            return true;
+    }
+    return false;
 }
 
