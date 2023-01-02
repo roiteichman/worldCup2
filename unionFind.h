@@ -44,7 +44,7 @@ public:
     m_root = team;
 }
 
-Value1* getMRootPlayer() const {
+Value1 getMRoot() const {
     return m_root;
 }
 
@@ -90,8 +90,8 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
     Value1 group1 = m_teams.findInt(m_teams.getRoot(), key1)->getValue();
     Value1 group2 = m_teams.findInt(m_teams.getRoot(),key2)->getValue();
 
-    Node<Value, Value1>* rootOfGroup1 = find(group1->getMRootPlayer()->getID());
-    Node<Value, Value1>* rootOfGroup2 = find(group2->getMRootPlayer()->getID());
+    Node<Value, Value1>* rootOfGroup1 = find(group1->getMRoot()->getID());
+    Node<Value, Value1>* rootOfGroup2 = find(group2->getMRoot()->getID());
     if(group1->getSize() > group2->getSize){
         rootOfGroup2->setFather(rootOfGroup1);
         rootOfGroup2->getValue()->setGamePlayed(-rootOfGroup1->getValue()->getGamesPlayed());
@@ -130,11 +130,11 @@ void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
         team->getValue()->setMAbility(val->getMAbility());
         team->getValue()->MulSpiritTeam(val->getMSpirit());
 
-        shared_ptr<Player> father = team->getValue()->getMRootPlayer();
+        shared_ptr<Player> father = team->getValue()->getMRoot();
 
         // if not first one
         if(father)
-            playerNode->setFather(m_array->get(team->getValue()->getMRootPlayer()->getID()));
+            playerNode->setFather(m_array->get(team->getValue()->getMRoot()->getID()));
         else {
             playerNode->setFather(nullptr);
             playerNode->setRoot(team->getValue());
@@ -210,6 +210,7 @@ void unionFind<Key, Value, Value1>::removeGroup(const Key &key) {
         m_teams.remove(m_teams.getRoot(), temp);
         m_spirit_teams.remove(m_teams.getRoot(), temp);
         m_graveyard_teams.insert(temp);
+        temp->setMKickedOut(true);
     }
 }
 

@@ -24,6 +24,7 @@ private:
     int m_gamesPlayed;
     int m_ability;
     permutation_t m_spiritTeam;
+    bool m_kickedOut;
 
     RankTree<shared_ptr<Player>> m_teamPlayersByStats;
     RankTree<shared_ptr<Player>> m_teamPlayersByIds;
@@ -56,6 +57,10 @@ public:
     void setNumOfGoalKeepers(int mNumOfGoalKeepers);
 
     void setMAbility(int mAbility);
+
+    void setMKickedOut(bool mKickedOut);
+
+    bool isMKickedOut() const;
 
     const permutation_t &getMSpiritTeam() const;
 

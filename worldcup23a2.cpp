@@ -118,17 +118,20 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
             winner = TEAM2WONPOINTS;
         }
         else if (team1->getMAbility() + team1->getPoints() == team2->getMAbility() + team2->getPoints()) {
-            if (team1->getMSpiritTeam().strength() < team2->getMSpiritTeam().strength()) {
+            int strength1 = team1->getMSpiritTeam().strength();
+            int strength2 = team2->getMSpiritTeam().strength();
+            if (strength1 < strength2) {
                 team2->setPoints(VICTORY);
                 winner = TEAM2WONSPIRIT;
             }
-            else if (team1->getMSpiritTeam().strength() == team2->getMSpiritTeam().strength()) {
+            else if (strength1 == strength2) {
                 team1->setPoints(DRAW);
                 team2->setPoints(DRAW);
                 winner = NONE;
             }
             else{
                 winner = TEAM1WONSPIRIT;
+                team1->setPoints(VICTORY);
             }
         }
         else{
@@ -156,6 +159,15 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) {
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards) {
+
+    Node<shared_ptr<Player>, shared_ptr<Team>>* playerNode = m_players.find(playerId);
+    // after find, the playerNode is son of the root
+    shared_ptr<Team> team = playerNode->getFather()->getMRoot();
+    // if there is no player like that or the team kicked out
+    if (team->isMKickedOut() || !playerNode->getValue()){
+        return StatusType::FAILURE;
+    }
+
     // TODO: Your code goes here
     return StatusType::SUCCESS;
 }

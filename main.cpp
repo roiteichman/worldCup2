@@ -18,7 +18,7 @@ int main() {
     wc.add_player(15, 3, b, 3, 4, 5, true);
     wc.add_player(9, 3, c, 3, -2, 5, true);
     wc.add_team(4);
-    wc.add_player(7, 4, c, 3, 4, 5, true);
+    wc.add_player(12, 4, c, 3, 4, 5, true);
     wc.add_player(10, 4, b, 3, 4, 5, true);
     wc.add_team(6);
     wc.add_player(83, 6, c, 3, 4, 5, true);
@@ -28,9 +28,10 @@ int main() {
     wc.add_player(7, 6, a, 3, 4, 5, true);
     wc.print();
     shared_ptr<Player> p15 = wc.getPlayer(15);
+    output_t<int> winnerBy = wc.play_match(2, 4);
     StatusType st = wc.remove_team(2);
     StatusType st1 = wc.remove_team(2);
-    output_t<int> winnerBy = wc.play_match(3, 4);
+
 
 
 
