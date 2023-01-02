@@ -8,8 +8,6 @@ const int TEAM1WONSPIRIT = 2;
 const int TEAM2WONPOINTS = 3;
 const int TEAM2WONSPIRIT = 4;
 
-
-
 world_cup_t::world_cup_t() {
     // TODO: Your code goes here
 }
@@ -83,14 +81,11 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
     /// TODO: Your code goes here
     try {
-        shared_ptr<Player> player (new Player(playerId, teamId, spirit, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
-
+        shared_ptr<Player> player(
+                new Player(playerId, teamId, spirit, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
         m_players.makeSet(player, playerId);
     } catch (const bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
-    }
-    if (goalKeeper){
-        team->setNumOfGoalKeepers(1);
     }
 
     return StatusType::SUCCESS;
@@ -151,11 +146,20 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
 output_t<int> world_cup_t::num_played_games_for_player(int playerId) {
     if (playerId<=0)
         return StatusType::INVALID_INPUT;
-    if(!m_players.find(playerId))
+    Node<shared_ptr<Player>, shared_ptr<Team>>* player = m_players.find(playerId);
+    if(!player)
     {
         return StatusType::FAILURE;
     }
+    int sum = 0;
+    while(player){
+        sum+=player->getValue()->getGamesPlayed();
+        player=player->getFather();
+    }
+
+    return sum;
     // TODO: Your code goes here
+    return 22;
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards) {
