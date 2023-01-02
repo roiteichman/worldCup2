@@ -71,6 +71,7 @@ public:
 
 
     Node<Value, Value1>* find(const Key &key);
+    Value findPlayer(const Key &key) const;
     Value1 findGroup(const Key &key) const;
     void union_(Key key1, Key key2);
     int rankOfNode(Node<Value, Value1>* node);
@@ -164,6 +165,13 @@ void unionFind<Key, Value, Value1>::print() {
 }
 
 template<typename Key, typename Value, typename Value1>
+Value unionFind<Key, Value, Value1>::findPlayer(const Key &key) const {
+    if (m_array->get(key))
+        return m_array->get(key)->getValue();
+    return nullptr;
+}
+
+template<typename Key, typename Value, typename Value1>
     Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
     Node<Value, Value1>* tempNode = m_array->get(key);
     Node<Value, Value1>* tempNode2 = tempNode;
@@ -209,6 +217,8 @@ void unionFind<Key, Value, Value1>::removeGroup(const Key &key) {
         temp->setMKickedOut(true);
     }
 }
+
+
 
 
 #endif //AVLTREE_H_UNIONFIND_H
