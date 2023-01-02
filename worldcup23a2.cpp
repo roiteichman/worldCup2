@@ -79,11 +79,16 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     if (team->getMRootPlayer()) {
         gamesOfCaptain = team->getMRootPlayer()->getGamesPlayed();
     }
+    permutation_t invOfRoot = permutation_t::neutral();
+    if (team->getMRootPlayer())
+    {
+        invOfRoot = team->getMRootPlayer()->getMSpirit().inv();
+    }
 
     /// TODO: Your code goes here
     try {
         shared_ptr<Player> player(
-                new Player(playerId, teamId, spirit, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
+                new Player(playerId, teamId, spirit*team->getMSpiritTeam()*invOfRoot, gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
         m_players.makeSet(player, playerId);
     } catch (const bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
