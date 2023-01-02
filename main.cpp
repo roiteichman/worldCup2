@@ -11,6 +11,7 @@ int main() {
     int a[5]  = {0,1,3,4,2};
     int b[5]  = {1,2,3,4,0};
     int c[5]  = {1,2,3,4,0};
+    permutation_t tt = permutation_t(a)*permutation_t(b);
     wc.add_team(2);
     wc.add_player(7, 2, a, 3, 4, 5, true);
     wc.add_player(8, 2, b, 3, 4, 5, true);

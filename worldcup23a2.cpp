@@ -85,7 +85,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     /// TODO: Your code goes here
     try {
         shared_ptr<Player> player(
-                new Player(playerId, teamId, invOfRoot*team->getMSpiritTeam(), gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
+                new Player(playerId, teamId, team->getMSpiritTeam().operator*(invOfRoot), gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
         m_players.makeSet(player, playerId);
         team->setMLastPlayer(player.get());
     } catch (const bad_alloc &e) {
@@ -229,7 +229,7 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
     permutation_t res = player->getValue()->getMSpirit();
     while(player->getFather())
     {
-        res = player->getFather()->getValue()->getMSpirit()*res;
+        res = res.operator*(player->getFather()->getValue()->getMSpirit());
         player = player->getFather();
     }
     return res;
