@@ -180,7 +180,7 @@ void Team::setTeamPlayersByIds(const RankTree<shared_ptr<Player>>& TeamPlayersBy
 }
 
 void Team::setMNumOfPlayers(int mNumOfPlayers) {
-    m_numOfPlayers = mNumOfPlayers;
+    m_numOfPlayers += mNumOfPlayers;
 }
 
 void Team::setNumOfGoalKeepers(int mNumOfGoalKeepers) {
