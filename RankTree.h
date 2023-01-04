@@ -541,7 +541,7 @@ RankNode<T> *RankTree<T>::select(int k, RankNode<T>* root) {
         return select(k, root);
     }
     else{
-        int newK = k-weightLeftSon(root);
+        int newK = k-weightLeftSon(root)-1;
         root = root->getRight();
         return select(newK, root);
     }

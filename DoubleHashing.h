@@ -135,7 +135,6 @@ void DoubleHashing<Key, Value>::put(const Key &key, const Value &value) {
         for (int i = 0; i < oldSize; i++) {
             this->put((*oldTable)[i]);
             (*oldTable)[i] = nullptr;
-            delete (*oldTable)[i];
         }
         this->put(key, value);
         delete oldTable;

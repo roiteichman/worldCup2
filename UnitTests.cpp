@@ -564,6 +564,7 @@ TEST_CASE("num_played_games_for_player test")
         output_t<int> resn14 = obj->num_played_games_for_player(2004);
         REQUIRE(resn14.status() == StatusType::SUCCESS);
         REQUIRE(resn14.ans() == 5);
+        delete obj;
     }
 }
 
@@ -803,6 +804,7 @@ TEST_CASE("get team points test")
         REQUIRE(res == StatusType::SUCCESS);
         res = obj->add_team(2);
         REQUIRE(res == StatusType::SUCCESS);
+        delete obj;
     }
 
     SECTION("get team points 2")
@@ -1023,7 +1025,7 @@ TEST_CASE("buy_team")
         REQUIRE(res == StatusType::FAILURE);
         res = obj->buy_team(20, 10);
         REQUIRE(res == StatusType::FAILURE);
-        
+
         res = obj->add_team(21);
         REQUIRE(res == StatusType::SUCCESS);
 
@@ -1035,7 +1037,7 @@ TEST_CASE("buy_team")
         REQUIRE(res == StatusType::FAILURE);
         res = obj->buy_team(20, 10);
         REQUIRE(res == StatusType::FAILURE);
-        
+
         delete obj;
     }
 
@@ -1050,7 +1052,7 @@ TEST_CASE("buy_team")
         REQUIRE(res == StatusType::SUCCESS);
         res = obj->add_player(11, 10, perm, 1, 1, 1, true);
         REQUIRE(res == StatusType::SUCCESS);
-        
+
         output_t<int> resn20 = obj->num_played_games_for_player(11);
         REQUIRE(resn20.status() == StatusType::SUCCESS);
         REQUIRE(resn20.ans() == 1);
@@ -1079,7 +1081,7 @@ TEST_CASE("buy_team")
         output_t<int> resn22 = obj->num_played_games_for_player(11);
         REQUIRE(resn22.status() == StatusType::SUCCESS);
         REQUIRE(resn22.ans() == 2);
-        
+
         output_t<int> resn2 = obj->get_team_points(10);
         REQUIRE(resn2.status() == StatusType::SUCCESS);
         REQUIRE(resn2.ans() == 3);
@@ -1120,7 +1122,7 @@ TEST_CASE("buy_team")
         output_t<permutation_t> resn8 = obj->get_partial_spirit(11);
         REQUIRE(resn8.status() == StatusType::SUCCESS);
         REQUIRE(str(resn8.ans()) == str(perm * perm * perm));
-        
+
         // Num played games is correct
         output_t<int> resn10 = obj->num_played_games_for_player(11);
         REQUIRE(resn10.status() == StatusType::SUCCESS);
@@ -1141,7 +1143,7 @@ TEST_CASE("buy_team")
         // All players get removed together
         res = obj->remove_team(30);
         REQUIRE(res == StatusType::SUCCESS);
-        
+
         REQUIRE(obj->add_player_cards(11, 1) == StatusType::FAILURE);
         REQUIRE(obj->add_player_cards(21, 1) == StatusType::FAILURE);
         REQUIRE(obj->add_player_cards(31, 1) == StatusType::FAILURE);

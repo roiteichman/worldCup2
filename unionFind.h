@@ -160,9 +160,10 @@ void unionFind<Key, Value, Value1>::makeSet(Value val, Key key) {
     // if the team exist and the player doesnt exist
     if(team && !(m_array->get(key)))
     {
-
-        // player is first one in team
+        // update the team ability
+        m_ability_teams->remove(m_ability_teams->getRoot(), team->getValue());
         team->getValue()->setMAbility(val->getMAbility());
+        m_ability_teams->insert(team->getValue());
 
 
         shared_ptr<Player> father = team->getValue()->getMRootPlayer();
