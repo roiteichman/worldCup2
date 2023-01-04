@@ -58,15 +58,13 @@ private:
     DoubleHashing<Key, Node<Value, Value1>>* m_array;
     //Tree  of teams
     RankTree<Value1>* m_teams;
-    RankTree<Value1>* m_graveyard_teams;
-    RankTree<Value1>* m_spirit_teams;
+    RankTree<Value1>* m_ability_teams;
 
 public:
     unionFind():
             m_array (new DoubleHashing<Key, Node<Value, Value1>>()),
             m_teams(new RankTree<Value1>(BY_IDS)),
-            m_graveyard_teams(new RankTree<Value1>(BY_IDS)),
-            m_spirit_teams(new RankTree<Value1>(BY_ABILITY))
+            m_ability_teams(new RankTree<Value1>(BY_ABILITY))
     {}
 
 
@@ -87,22 +85,54 @@ public:
 
 template<typename Key, typename Value, typename Value1>
 void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
-    Value1 group1 = m_teams->findInt(m_teams->getRoot(), key1)->getValue();
-    Value1 group2 = m_teams->findInt(m_teams->getRoot(),key2)->getValue();
+    Value1 buyerTeam = m_teams->findInt(m_teams->getRoot(), key1)->getValue();
+    Value1 boughtTeam = m_teams->findInt(m_teams->getRoot(), key2)->getValue();
 
-    Node<Value, Value1>* rootOfGroup1 = find(group1->getMRoot()->getID());
-    Node<Value, Value1>* rootOfGroup2 = find(group2->getMRoot()->getID());
-    if(group1->getSize() > group2->getSize){
-        rootOfGroup2->setFather(rootOfGroup1);
-        rootOfGroup2->getValue()->setGamePlayed(-rootOfGroup1->getValue()->getGamesPlayed());
-        m_teams->remove(m_teams->getRoot(), group2);
-        m_spirit_teams->remove(m_spirit_teams->getRoot(), group2);
+    Node<Value, Value1>* rootOfBuyerTeam = find(buyerTeam->getMRootPlayer()->getID());
+    Node<Value, Value1>* rootOfBoughtTeam = find(boughtTeam->getMRootPlayer()->getID());
+
+    if(buyerTeam->size() >= boughtTeam->size()){
+        // making the union + "boxes" method
+        rootOfBoughtTeam->getValue()->increaseGamePlayed(-buyerTeam->getMRootPlayer()->getGamesPlayed());
+        rootOfBoughtTeam->getValue()->MulSpiritPlayer(buyerTeam->getMSpiritTeam()*buyerTeam->getMRootPlayer()->getMSpirit().inv());
+
+        rootOfBoughtTeam->setFather(rootOfBuyerTeam);
+        rootOfBoughtTeam->setRoot(nullptr);
+
+        // update new team fields
+        buyerTeam->setPoints(boughtTeam->getPoints());
+        buyerTeam->setMNumOfPlayers(boughtTeam->size());
+        buyerTeam->MulSpiritTeam(boughtTeam->getMSpiritTeam());
+        m_ability_teams->remove(m_ability_teams->getRoot(), buyerTeam);
+        buyerTeam->setMAbility(boughtTeam->getMAbility());
+        m_ability_teams->insert( buyerTeam);
+        buyerTeam->setNumOfGoalKeepers(boughtTeam->getNumOfGoalKeepers());
+
+        // remove the bought team
+        m_teams->remove(m_teams->getRoot(), boughtTeam);
+        m_ability_teams->remove(m_ability_teams->getRoot(), boughtTeam);
     }
     else{
-        rootOfGroup1->setFather(rootOfGroup2);
-        rootOfGroup1->getValue()->setGamePlayed(-rootOfGroup2->getValue()->getGamesPlayed());
-        m_teams->remove(m_teams->getRoot(), group1);
-        m_spirit_teams->remove(m_spirit_teams->getRoot(), group1);
+        // making the union + "boxes" method
+        rootOfBuyerTeam->getValue()->increaseGamePlayed(-boughtTeam->getMRootPlayer()->getGamesPlayed());
+        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam());
+        buyerTeam->getMRootPlayer()->MulSpiritPlayer(boughtTeam->getMRootPlayer()->getMSpirit().inv());
+
+        rootOfBuyerTeam->setFather(rootOfBoughtTeam);
+        rootOfBuyerTeam->setRoot(nullptr);
+
+        // update new team fields
+        boughtTeam->setPoints(buyerTeam->getPoints());
+        boughtTeam->setMNumOfPlayers(buyerTeam->size());
+        boughtTeam->MulSpiritTeam(buyerTeam->getMSpiritTeam());
+        m_ability_teams->remove(m_ability_teams->getRoot(), boughtTeam);
+        boughtTeam->setMAbility(buyerTeam->getMAbility());
+        m_ability_teams->insert( boughtTeam);
+        boughtTeam->setNumOfGoalKeepers(buyerTeam->getNumOfGoalKeepers());
+
+        // remove the bought team
+        m_teams->remove(m_teams->getRoot(), buyerTeam);
+        m_ability_teams->remove(m_ability_teams->getRoot(), buyerTeam);
     }
 }
 
@@ -152,7 +182,7 @@ void unionFind<Key, Value, Value1>::insertGroup(const Value1 &val,const Key &key
     if(!m_teams->findInt(m_teams->getRoot(), key))
     {
         m_teams->insert(val);
-        m_spirit_teams->insert(val);
+        m_ability_teams->insert(val);
     }
 }
 
@@ -220,15 +250,14 @@ void unionFind<Key, Value, Value1>::removeGroup(const Key &key) {
     if (m_teams->findInt(m_teams->getRoot(), key)){
         Value1 temp = m_teams->findInt(m_teams->getRoot(), key)->getValue();
         m_teams->remove(m_teams->getRoot(), temp);
-        m_spirit_teams->remove(m_teams->getRoot(), temp);
-        m_graveyard_teams->insert(temp);
+        m_ability_teams->remove(m_teams->getRoot(), temp);
         temp->setMKickedOut(true);
     }
 }
 
 template<typename Key, typename Value, typename Value1>
 RankTree<Value1>* unionFind<Key, Value, Value1>::getMSpiritTeams() const{
-    return m_spirit_teams;
+    return m_ability_teams;
 }
 
 

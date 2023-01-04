@@ -60,8 +60,6 @@ public:
     Player *getMLastPlayer() const;
     void setMLastPlayer(Player *mLastPlayer);
 
-    int getMNumOfPlayers() const;
-
     void setMAbility(int mAbility);
 
     void setMKickedOut(bool mKickedOut);

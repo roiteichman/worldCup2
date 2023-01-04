@@ -238,7 +238,3 @@ void Team::setMLastPlayer(Player *mLastPlayer) {
     m_lastPlayer = mLastPlayer;
 }
 
-int Team::getMNumOfPlayers() const {
-    return m_numOfPlayers;
-}
-

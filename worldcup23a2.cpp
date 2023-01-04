@@ -189,8 +189,8 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards) {
     else {
         team = playerNode->getMRoot();
     }
-    // if there is no player like that or the team kicked out
-    if (team->isMKickedOut() || !playerNode->getValue()){
+    // if the team kicked out
+    if (team->isMKickedOut()){
         return StatusType::FAILURE;
     }
     playerNode->getValue()->setCards(cards);
@@ -270,32 +270,13 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2) {
     if (!buyerTeam || !boughtTeam){
         return StatusType::FAILURE;
     }
-    // buyerTeam is bigger than boughtTeam
-    if (buyerTeam->getMNumOfPlayers()>=boughtTeam->getMNumOfPlayers()){
-        boughtTeam->getMRootPlayer()->increaseGamePlayed(-buyerTeam->getMRootPlayer()->getGamesPlayed());
-        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam()*buyerTeam->getMRootPlayer()->getMSpirit().inv());
-        buyerTeam->MulSpiritTeam(boughtTeam->getMSpiritTeam());
-        buyerTeam->setPoints()
-        m_players.union_(teamId1,teamId2);
+    try {
+        m_players.union_(teamId1, teamId2);
     }
-    else {
-        buyerTeam->getMRootPlayer()->increaseGamePlayed(-boughtTeam->getMRootPlayer()->getGamesPlayed());
-
-        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam());
-        buyerTeam->getMRootPlayer()->MulSpiritPlayer(boughtTeam->getMRootPlayer()->getMSpirit().inv());
-        buyerTeam->MulSpiritTeam(boughtTeam->getMSpiritTeam());
-        ///TODO: change name of team
-
-        m_players.union_(teamId1,teamId2);
-
-
-
-        boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam()*buyerTeam->getMRootPlayer()->getMSpirit().inv());
-
+    catch (const bad_alloc &e) {
+        return StatusType::ALLOCATION_ERROR;
     }
 
-
-    // TODO: Your code goes here
     return StatusType::SUCCESS;
 }
 
