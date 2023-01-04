@@ -14,4 +14,6 @@ int main() {
     permutation_t not_good_perm(basePerm6);
     obj->add_player(0, 1, perm1, 1, 1, 1, true);
     StatusType t = obj->add_player(1, 1, not_good_perm, 1, 1, 1, true);
+
+    delete obj;
 }

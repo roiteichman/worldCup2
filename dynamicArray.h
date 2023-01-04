@@ -24,7 +24,9 @@ public:
     explicit Vector(T initial = T{});
 
     // Destructor
-    ~Vector() {delete[] m_vector;}
+    ~Vector() {
+        delete[] m_vector;
+    }
 
     // Element read/write access
     T& operator[](const int index); // return element reference at index

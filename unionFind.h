@@ -67,6 +67,11 @@ public:
             m_ability_teams(new RankTree<Value1>(BY_ABILITY))
     {}
 
+    ~unionFind(){
+        delete m_ability_teams;
+        delete m_teams;
+        delete m_array;
+    }
 
     Node<Value, Value1>* find(const Key &key);
     Value findPlayer(const Key &key) const;
