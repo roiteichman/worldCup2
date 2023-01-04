@@ -146,10 +146,16 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
         boughtTeam->setMAbility(buyerTeam->getMAbility());
         m_ability_teams->insert( boughtTeam);
         boughtTeam->setNumOfGoalKeepers(buyerTeam->getNumOfGoalKeepers());
+        // remove the unite team from tree  by ID
+        m_teams->remove(m_teams->getRoot(), boughtTeam);
+        // update id
+        boughtTeam->setMTeamId(buyerTeam->getID());
 
         // remove the bought team
         m_teams->remove(m_teams->getRoot(), buyerTeam);
         m_ability_teams->remove(m_ability_teams->getRoot(), buyerTeam);
+        // return the unite team to the team after remove the other one
+        m_teams->insert(boughtTeam);
     }
 }
 
