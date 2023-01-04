@@ -238,3 +238,7 @@ void Team::setMLastPlayer(Player *mLastPlayer) {
     m_lastPlayer = mLastPlayer;
 }
 
+void Team::setMTeamId(int mTeamId) {
+    m_teamId = mTeamId;
+}
+

@@ -43,7 +43,6 @@ public:
     Team (const Team& team) = delete;
     Team& operator = (const Team& team) = delete;
 
-    void setMTeamId(int mTeamId);
 
     bool operator> (const Team& other) const;
     bool operator<(const Team &other) const;
@@ -84,6 +83,7 @@ public:
     Team* getClosestRight() const;
     void get_all_players(int *const output);
     int getID () const;
+    void setMTeamId(int mTeamId);
     int getPoints () const;
     int getGoals () const;
     int getCards () const;
