@@ -39,7 +39,7 @@ public:
 	output_t() : __status(StatusType::SUCCESS), __ans(T()) { }
 	output_t(StatusType status) : __status(status), __ans(T()) { }
 	output_t(const T &ans) : __status(StatusType::SUCCESS), __ans(ans) { }
-	
+
 	StatusType status() { return __status; }
 	T ans() { return __ans; }
 };
@@ -61,17 +61,17 @@ public:
 	enum {
 		N = 5
 	};
-	
+
 private:
 	// DO NOT access these private fields - may be enforced by verifier.
 
 	int a[N];
-	
+
 public:
 	permutation_t() { for (int i = 0; i < N; ++i) { a[i] = -1; } }
 	permutation_t(const int a[N]) { for (int i = 0; i < N; ++i) { this->a[i] = a[i]; } }
 	permutation_t(const permutation_t &other) : permutation_t(other.a) { }
-	
+
 	static permutation_t invalid() { int a[N]; for (int i = 0; i < N; ++i) { a[i] = -1; } return permutation_t(a); }
 	static permutation_t neutral() { int a[N]; for (int i = 0; i < N; ++i) { a[i] = i; } return permutation_t(a); }
 
@@ -82,20 +82,20 @@ public:
 		{
 			found[i] = 0;
 		}
-		
+
 		for (int i = 0; i < N; ++i)
 		{
 			if (a[i] < 0 || a[i] >= N || found[a[i]])
 			{
 				return false;
 			}
-			
+
 			found[a[i]] = true;
 		}
-		
+
 		return true;
 	}
-	
+
 	int strength() const
 	{
 		int s = 0;
@@ -103,10 +103,10 @@ public:
 		{
 			s += (i + 1) * (a[i] + 1);
 		}
-		
+
 		return s;
 	}
-	
+
 	permutation_t inv() const
 	{
 		int res[N];
@@ -116,7 +116,7 @@ public:
 		}
 		return permutation_t(res);
 	}
-	
+
 	permutation_t operator *(const permutation_t &other) const
 	{
 		int res[N];
@@ -128,7 +128,7 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& out,
-	                                const permutation_t &obj)
+									const permutation_t &obj)
 	{
 		if (obj.isvalid())
 		{
@@ -149,28 +149,28 @@ public:
 				{
 					out << ',';
 				}
-				
+
 				// N<10
 				// every item 1..9 has extactly one digit.
 				out << '*';
 			}
 		}
-		
+
 		return out;
 	}
-	
+
 	static permutation_t read(const char *in)
 	{
 		// N<10
 		// we can just read a single digit at a time for 1..9
-		
+
 		if (! in) // nullptr
 		{
 			return permutation_t::invalid();
 		}
-		
+
 		permutation_t res;
-		
+
 		for (int i = 0; i < N; ++i)
 		{
 			if (i > 0)
@@ -182,7 +182,7 @@ public:
 					return permutation_t::invalid();
 				}
 			}
-			
+
 			if (in[2 * i] >= '1' && in[2 * i] <= '9')
 			{
 				res.a[i] = (in[2 * i] - '0') - 1;
@@ -198,18 +198,18 @@ public:
 				return permutation_t::invalid();
 			}
 		}
-		
+
 		if (in[2 * N - 1]) // expected termination not found
 		{
 			return permutation_t::invalid();
 		}
-		
+
 		if (! res.isvalid())
 		{
 			// single representitive of invalidness
 			return permutation_t::invalid();
 		}
-		
+
 		return res;
 	}
 };

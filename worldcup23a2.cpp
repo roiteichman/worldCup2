@@ -64,8 +64,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    const permutation_t &spirit, int gamesPlayed,
                                    int ability, int cards, bool goalKeeper) {
 
-    if (teamId <= 0 || playerId <= 0 || gamesPlayed < 0 || cards < 0 || !spirit.isvalid() ||
-        (gamesPlayed == 0 && cards > 0)) {
+    if (teamId <= 0 || playerId <= 0 || gamesPlayed < 0 || cards < 0 || !spirit.isvalid()) {
         return StatusType::INVALID_INPUT;
     }
 
@@ -227,7 +226,7 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i) {
         return StatusType::FAILURE;
     }
     RankTree<shared_ptr<Team>>* tree = m_players.getMSpiritTeams();
-    return tree->select(i+1, tree->getRoot())->getValue()->getID();
+    return tree->select(i, tree->getRoot())->getValue()->getID();
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
