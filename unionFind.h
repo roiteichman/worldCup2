@@ -93,7 +93,18 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
     Value1 buyerTeam = m_teams->findInt(m_teams->getRoot(), key1)->getValue();
     Value1 boughtTeam = m_teams->findInt(m_teams->getRoot(), key2)->getValue();
 
-    Node<Value, Value1>* rootOfBuyerTeam = find(buyerTeam->getMRootPlayer()->getID());
+    if(!buyerTeam->getMRootPlayer()) {
+        m_teams->remove(m_teams->getRoot(), buyerTeam);
+        m_ability_teams->remove(m_ability_teams->getRoot(), buyerTeam);
+        boughtTeam->setId(key1);
+        return;
+    }
+    if(!boughtTeam->getMRootPlayer()) {
+        m_teams->remove(m_teams->getRoot(), boughtTeam);
+        m_ability_teams->remove(m_ability_teams->getRoot(), boughtTeam);
+        return;
+    }
+    Node<Value, Value1> *rootOfBuyerTeam = find(buyerTeam->getMRootPlayer()->getID());
     Node<Value, Value1>* rootOfBoughtTeam = find(boughtTeam->getMRootPlayer()->getID());
 
     if(buyerTeam->size() >= boughtTeam->size()){
