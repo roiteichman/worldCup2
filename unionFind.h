@@ -96,7 +96,7 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
     if(!buyerTeam->getMRootPlayer()) {
         m_teams->remove(m_teams->getRoot(), buyerTeam);
         m_ability_teams->remove(m_ability_teams->getRoot(), buyerTeam);
-        boughtTeam->setId(key1);
+        boughtTeam->setMTeamId(key1);
         return;
     }
     if(!boughtTeam->getMRootPlayer()) {
