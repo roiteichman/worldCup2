@@ -7,8 +7,8 @@
 
 
 Player::Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int ability, int CardsReceived, bool goalKeeper) :
-        m_id(playerId), m_team(teamId),m_spirit(spirit), m_gamePlayed(gamesPlayed), m_ability(ability), m_cards(CardsReceived),
-        m_goalKeeper(goalKeeper),
+        m_id(playerId), m_team(teamId), m_gamePlayed(gamesPlayed), m_ability(ability), m_cards(CardsReceived),
+        m_goalKeeper(goalKeeper), m_spirit(spirit),
         m_closest_left(nullptr), m_closest_right(nullptr) {}
 
 bool Player::operator<(const Player &other) const {

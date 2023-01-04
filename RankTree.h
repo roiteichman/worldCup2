@@ -538,12 +538,12 @@ RankNode<T> *RankTree<T>::select(int k, RankNode<T>* root) {
     }
     else if(weightLeftSon(root)>k-1){
         root = root->getLeft();
-        select(k, root);
+        return select(k, root);
     }
     else{
         int newK = k-weightLeftSon(root);
         root = root->getRight();
-        select(newK, root);
+        return select(newK, root);
     }
 }
 template<class T>

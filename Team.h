@@ -43,6 +43,8 @@ public:
     Team (const Team& team) = delete;
     Team& operator = (const Team& team) = delete;
 
+    void setMTeamId(int mTeamId);
+
     bool operator> (const Team& other) const;
     bool operator<(const Team &other) const;
 

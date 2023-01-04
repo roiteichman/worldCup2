@@ -102,12 +102,14 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2) {
 
-
+    if(teamId1==teamId2 || teamId1<=0 || teamId2<=0){
+        return StatusType::INVALID_INPUT;
+    }
 
     shared_ptr<Team> team1 = m_players.findGroup(teamId1);
     shared_ptr<Team> team2 = m_players.findGroup(teamId2);
 
-    if (!team1 || !team2) {
+    if (!team1.get() || !team2.get()) {
         return StatusType::FAILURE;
     }
 

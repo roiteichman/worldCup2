@@ -144,7 +144,6 @@ template<typename Key, typename Value>
 void DoubleHashing<Key, Value>::print() {
     for (int i = 0; i < capacity; i++) {
         if (m_table[i]->key) {
-            int a = m_table[i]->key;
             std::cout <<" "<< i  << "->" << m_table[i]->key<<"\n";
         }
     }
