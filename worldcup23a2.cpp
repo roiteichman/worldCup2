@@ -277,7 +277,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2) {
     catch (const bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
     }
-
+    m_numOfTeams--;
     return StatusType::SUCCESS;
 }
 

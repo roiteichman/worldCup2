@@ -468,7 +468,7 @@ void RankTree<T>::remove(RankNode<T>* root, const T &value){
         willDeleted->setParent(nullptr);
         deleteRankNode(willDeleted);
         while (parent) {
-            parent->decreaseWeight();
+            parent->updateWeight();
             balanceTheTree(parent);
             parent = parent->getParent();
         }
