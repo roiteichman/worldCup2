@@ -7,7 +7,7 @@ include_directories(.)
 
 add_executable(worldCup2
         RankTree.h
-        UnitTests.cpp
+        main23a2.cpp
         Player.cpp
         Player.h
         DoubleHashing.h

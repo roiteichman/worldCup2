@@ -129,7 +129,7 @@ void DoubleHashing<Key, Value>::put(const Key &key, const Value &value) {
         // no place
         Vector < Record<Key, Value> * >* newTable = (new Vector < Record<Key, Value> * > (2 * capacity + 1, initialValue));
         Vector < Record<Key, Value> * >* oldTable = m_table;
-        int oldSize = size;
+        int oldSize = m_table->size();
         m_table = newTable;
         capacity = 2 * capacity + 1;
         for (int i = 0; i < oldSize; i++) {
