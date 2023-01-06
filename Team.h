@@ -70,6 +70,7 @@ public:
     const permutation_t &getMSpiritTeam() const;
 
     void MulSpiritTeam(const permutation_t & mSpiritPlayer);
+    void MulSpiritTeamInv(const permutation_t & mSpiritPlayer);
 
     int getMAbility() const;
 

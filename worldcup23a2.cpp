@@ -84,7 +84,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     /// TODO: Your code goes here
     try {
         shared_ptr<Player> player(
-                new Player(playerId, teamId, team->getMSpiritTeam().operator*(invOfRoot), gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
+                new Player(playerId, teamId, (invOfRoot)*team->getMSpiritTeam(), gamesPlayed - gamesOfCaptain, ability, cards, goalKeeper));
         m_players.makeSet(player, playerId);
         team->setMLastPlayer(player.get());
     } catch (const bad_alloc &e) {
@@ -251,11 +251,17 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
     if (team->isMKickedOut() || !player->getValue()){
         return StatusType::FAILURE;
     }
+    bool isNotRoot = false;
     while(player->getFather())
     {
-        res = res.operator*(player->getFather()->getValue()->getMSpirit());
+        isNotRoot = true;
+        res = (player->getFather()->getValue()->getMSpirit())*res;
         player = player->getFather();
     }
+    /*if(isNotRoot)
+    {
+        res = res*player->getValue()->getMSpirit();
+    }*/
     return res;
 }
 
@@ -277,7 +283,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2) {
     catch (const bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
     }
-    m_numOfTeams--;
+    decreaseNumOfTeams();
     return StatusType::SUCCESS;
 }
 

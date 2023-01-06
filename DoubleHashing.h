@@ -117,7 +117,8 @@ DoubleHashing<Key, Value>::DoubleHashing():
 template<typename Key, typename Value>
 void DoubleHashing<Key, Value>::put(Record<Key, Value> *p) {
     int index = lookUp(p->key, capacity);
-    (*m_table)[index] = p;
+    if(index<capacity)
+        (*m_table)[index] = p;
 }
 
 template<typename Key, typename Value>
@@ -133,6 +134,9 @@ void DoubleHashing<Key, Value>::put(const Key &key, const Value &value) {
         m_table = newTable;
         capacity = 2 * capacity + 1;
         for (int i = 0; i < oldSize; i++) {
+            if(i==123) {
+                int a=5;
+            }
             this->put((*oldTable)[i]);
             (*oldTable)[i] = nullptr;
         }

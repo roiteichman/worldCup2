@@ -375,7 +375,7 @@ RankNode<T>* RankTree<T>::find(RankNode<T>* root, const T& value) {
     }
     if( root ) {
         //std::cout << root->getValue() << std::endl;
-        if(root->getValue() == value )
+        if(root->getValue().get() == value.get() )
             return root; // Found
         else if( *value < *(root->getValue()) )
             return find(root->getLeft(), value);

@@ -242,3 +242,7 @@ void Team::setMTeamId(int mTeamId) {
     m_teamId = mTeamId;
 }
 
+void Team::MulSpiritTeamInv(const permutation_t &mSpiritPlayer) {
+    m_spiritTeam = mSpiritPlayer*m_spiritTeam;
+}
+

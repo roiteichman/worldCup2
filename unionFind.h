@@ -38,12 +38,12 @@ public:
     }
 
     void setRoot(Value1 team) {
-    m_root = team;
-}
+        m_root = team;
+    }
 
-Value1 getMRoot() const {
-    return m_root;
-}
+    Value1 getMRoot() const {
+        return m_root;
+    }
 
 
 };
@@ -93,6 +93,7 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
     Value1 buyerTeam = m_teams->findInt(m_teams->getRoot(), key1)->getValue();
     Value1 boughtTeam = m_teams->findInt(m_teams->getRoot(), key2)->getValue();
 
+    //buyer is empty
     if(!buyerTeam->getMRootPlayer()) {
         m_teams->remove(m_teams->getRoot(), buyerTeam);
         m_ability_teams->remove(m_ability_teams->getRoot(), buyerTeam);
@@ -103,6 +104,8 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
         m_ability_teams->insert(boughtTeam);
         return;
     }
+
+    //bought is empty
     if(!boughtTeam->getMRootPlayer()) {
         m_teams->remove(m_teams->getRoot(), boughtTeam);
         m_ability_teams->remove(m_ability_teams->getRoot(), boughtTeam);
@@ -112,10 +115,11 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
     Node<Value, Value1>* rootOfBuyerTeam = find(buyerTeam->getMRootPlayer()->getID());
     Node<Value, Value1>* rootOfBoughtTeam = find(boughtTeam->getMRootPlayer()->getID());
 
+    //buyer is bigger
     if(buyerTeam->size() >= boughtTeam->size()){
         // making the union + "boxes" method
         rootOfBoughtTeam->getValue()->increaseGamePlayed(-buyerTeam->getMRootPlayer()->getGamesPlayed());
-        rootOfBoughtTeam->getValue()->MulSpiritPlayer(buyerTeam->getMSpiritTeam()*buyerTeam->getMRootPlayer()->getMSpirit().inv());
+        rootOfBoughtTeam->getValue()->MulSpiritPlayer(buyerTeam->getMRootPlayer()->getMSpirit().inv()*buyerTeam->getMSpiritTeam());
 
         rootOfBoughtTeam->setFather(rootOfBuyerTeam);
         rootOfBoughtTeam->setRoot(nullptr);
@@ -133,19 +137,19 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
         m_teams->remove(m_teams->getRoot(), boughtTeam);
         m_ability_teams->remove(m_ability_teams->getRoot(), boughtTeam);
     }
+
+
     else{
         // making the union + "boxes" method
         rootOfBuyerTeam->getValue()->increaseGamePlayed(-boughtTeam->getMRootPlayer()->getGamesPlayed());
         boughtTeam->getMRootPlayer()->MulSpiritPlayer(buyerTeam->getMSpiritTeam());
         buyerTeam->getMRootPlayer()->MulSpiritPlayer(boughtTeam->getMRootPlayer()->getMSpirit().inv());
-
         rootOfBuyerTeam->setFather(rootOfBoughtTeam);
         rootOfBuyerTeam->setRoot(nullptr);
-
         // update new team fields
         boughtTeam->setPoints(buyerTeam->getPoints());
         boughtTeam->setMNumOfPlayers(buyerTeam->size());
-        boughtTeam->MulSpiritTeam(buyerTeam->getMSpiritTeam());
+        boughtTeam->MulSpiritTeamInv(buyerTeam->getMSpiritTeam());
         m_ability_teams->remove(m_ability_teams->getRoot(), boughtTeam);
         boughtTeam->setMAbility(buyerTeam->getMAbility());
         m_ability_teams->insert( boughtTeam);
@@ -235,12 +239,12 @@ Value unionFind<Key, Value, Value1>::findPlayer(const Key &key) const {
 }
 
 template<typename Key, typename Value, typename Value1>
-    Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
+Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
     Node<Value, Value1>* tempNode = m_array->get(key);
     Node<Value, Value1>* tempNode2 = tempNode;
     Node<Value, Value1>* tempNode2Father;
 
-        if(tempNode)
+    if(tempNode)
         tempNode2Father= tempNode2->getFather();
     else
         tempNode2Father = nullptr;
@@ -248,11 +252,13 @@ template<typename Key, typename Value, typename Value1>
     int toSub =0;
     if (tempNode) {
         // first round searching the root
+        permutation_t perm1 = permutation_t::neutral();
         while (tempNode->getFather())
         {
             if(tempNode->getFather()) {
                 // sum all the gamesPlayed without the root
                 sumGames += tempNode->getValue()->getGamesPlayed();
+                perm1 = tempNode->getValue()->getMSpirit()*perm1;
                 tempNode = tempNode->getFather();
             }
             //now tempNode is root
@@ -264,6 +270,8 @@ template<typename Key, typename Value, typename Value1>
                 break;
             int temp = tempNode2->getValue()->getGamesPlayed();
             tempNode2->getValue()->setGamePlayed(sumGames - toSub);
+            tempNode2->getValue()->MulSpiritPlayer(tempNode2->getValue()->getMSpirit().inv()*perm1);
+            perm1 = tempNode2->getValue()->getMSpirit().inv()*perm1;
             toSub += temp;
             tempNode2->setFather(tempNode);
             tempNode2 = tempNode2Father;
@@ -278,7 +286,7 @@ void unionFind<Key, Value, Value1>::removeGroup(const Key &key) {
     if (m_teams->findInt(m_teams->getRoot(), key)){
         Value1 temp = m_teams->findInt(m_teams->getRoot(), key)->getValue();
         m_teams->remove(m_teams->getRoot(), temp);
-        m_ability_teams->remove(m_teams->getRoot(), temp);
+        m_ability_teams->remove(m_ability_teams->getRoot(), temp);
         temp->setMKickedOut(true);
     }
 }
