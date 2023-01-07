@@ -51,6 +51,7 @@ public:
 
     const permutation_t& getMSpirit() const;
     void MulSpiritPlayer(const permutation_t & mSpiritPlayer);
+    void MulSpiritPlayerInv(const permutation_t & mSpiritPlayer);
 
     Player* getClosestLeft() const;
     Player* getClosestRight() const;

@@ -119,7 +119,8 @@ void unionFind<Key, Value, Value1>::union_(Key key1, Key key2) {
     if(buyerTeam->size() >= boughtTeam->size()){
         // making the union + "boxes" method
         rootOfBoughtTeam->getValue()->increaseGamePlayed(-buyerTeam->getMRootPlayer()->getGamesPlayed());
-        rootOfBoughtTeam->getValue()->MulSpiritPlayer(buyerTeam->getMRootPlayer()->getMSpirit().inv()*buyerTeam->getMSpiritTeam());
+        permutation_t spiritBuyTeamWithoutRoot = buyerTeam->getMRootPlayer()->getMSpirit().inv()*buyerTeam->getMSpiritTeam();
+        rootOfBoughtTeam->getValue()->MulSpiritPlayer(spiritBuyTeamWithoutRoot);
 
         rootOfBoughtTeam->setFather(rootOfBuyerTeam);
         rootOfBoughtTeam->setRoot(nullptr);
@@ -269,9 +270,10 @@ Node<Value, Value1>* unionFind<Key, Value, Value1>::find(const Key &key) {
             if(!tempNode2Father)
                 break;
             int temp = tempNode2->getValue()->getGamesPlayed();
+            permutation_t tempT = tempNode2->getValue()->getMSpirit().inv();
             tempNode2->getValue()->setGamePlayed(sumGames - toSub);
-            tempNode2->getValue()->MulSpiritPlayer(tempNode2->getValue()->getMSpirit().inv()*perm1);
-            perm1 = tempNode2->getValue()->getMSpirit().inv()*perm1;
+            perm1 = perm1*tempT;
+            tempNode2->getValue()->MulSpiritPlayer(perm1);
             toSub += temp;
             tempNode2->setFather(tempNode);
             tempNode2 = tempNode2Father;

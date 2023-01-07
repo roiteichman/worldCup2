@@ -251,17 +251,12 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId) {
     if (team->isMKickedOut() || !player->getValue()){
         return StatusType::FAILURE;
     }
-    bool isNotRoot = false;
     while(player->getFather())
     {
-        isNotRoot = true;
         res = (player->getFather()->getValue()->getMSpirit())*res;
         player = player->getFather();
     }
-    /*if(isNotRoot)
-    {
-        res = res*player->getValue()->getMSpirit();
-    }*/
+
     return res;
 }
 

@@ -146,4 +146,8 @@ void Player::MulSpiritPlayer(const permutation_t &mSpiritPlayer) {
 
 }
 
+void Player::MulSpiritPlayerInv(const permutation_t &mSpiritPlayer) {
+    m_spirit = this->m_spirit*(mSpiritPlayer);
+}
+
 

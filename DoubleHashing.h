@@ -134,9 +134,6 @@ void DoubleHashing<Key, Value>::put(const Key &key, const Value &value) {
         m_table = newTable;
         capacity = 2 * capacity + 1;
         for (int i = 0; i < oldSize; i++) {
-            if(i==123) {
-                int a=5;
-            }
             this->put((*oldTable)[i]);
             (*oldTable)[i] = nullptr;
         }
